@@ -36,7 +36,7 @@ The first step is to create the CalendarModule.java Java file inside `android/ap
 Then add the following content:
 
 ```java
-package com.your-app-name; // replace com.your-app-name with your app’s name
+package com.your-apps-package-name; // replace your-apps-package-name with your app’s package name
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -73,7 +73,7 @@ public String getName() {
 The native module can then be accessed in JS like this:
 
 ```jsx
-const { CalendarModule } = ReactNative.NativeModules;
+const {CalendarModule} = ReactNative.NativeModules;
 ```
 
 ### Export a Native Method to JavaScript
@@ -155,7 +155,7 @@ public class MyAppPackage implements ReactPackage {
 
 This file imports the native module you created, `CalendarModule`. It then instantiates `CalendarModule` within the `createNativeModules()` function and returns it as a list of `NativeModules` to register. If you add more native modules down the line, you can also instantiate them and add them to the list returned here.
 
-> It is worth noting that this way of registering native modules eagerly initializes all native modules when the application starts, which adds to the startup time of an application. You can use [TurboReactPackage](https://github.com/facebook/react-native/blob/master/ReactAndroid/src/main/java/com/facebook/react/TurboReactPackage.java) as an alternative. Instead of `createNativeModules`, which return a list of instantiated native module objects, TurboReactPackage implements a `getModule(String name, ReactApplicationContext rac)` method that creates the native module object, when required. TurboReactPackage is a bit more complicated to implement at the moment. In addition to implementing a `getModule()` method, you have to implement a `getReactModuleInfoProvider()` method, which returns a list of all the native modules the package can instantiate along with a function that instantiates them, example [here](https://github.com/facebook/react-native/blob/8ac467c51b94c82d81930b4802b2978c85539925/ReactAndroid/src/main/java/com/facebook/react/CoreModulesPackage.java#L86-L165). Again, using TurboReactPackage will allow your application to have a faster startup time, but it is currently a bit cumbersome to write. So proceed with caution if you choose to use TurboReactPackages.
+> It is worth noting that this way of registering native modules eagerly initializes all native modules when the application starts, which adds to the startup time of an application. You can use [TurboReactPackage](https://github.com/facebook/react-native/blob/0.64-stable/ReactAndroid/src/main/java/com/facebook/react/TurboReactPackage.java) as an alternative. Instead of `createNativeModules`, which return a list of instantiated native module objects, TurboReactPackage implements a `getModule(String name, ReactApplicationContext rac)` method that creates the native module object, when required. TurboReactPackage is a bit more complicated to implement at the moment. In addition to implementing a `getModule()` method, you have to implement a `getReactModuleInfoProvider()` method, which returns a list of all the native modules the package can instantiate along with a function that instantiates them, example [here](https://github.com/facebook/react-native/blob/8ac467c51b94c82d81930b4802b2978c85539925/ReactAndroid/src/main/java/com/facebook/react/CoreModulesPackage.java#L86-L165). Again, using TurboReactPackage will allow your application to have a faster startup time, but it is currently a bit cumbersome to write. So proceed with caution if you choose to use TurboReactPackages.
 
 To register the `CalendarModule` package, you must add `MyAppPackage` to the list of packages returned in ReactNativeHost's `getPackages()` method. Open up your `MainApplication.java` file, which can be found in the following path: `android/app/src/main/java/com/your-app-name/MainApplication.java`
 
@@ -182,7 +182,7 @@ Find a place in your application where you would like to add a call to the nativ
 
 ```jsx
 import React from 'react';
-import { NativeModules, Button } from 'react-native';
+import {NativeModules, Button} from 'react-native';
 
 const NewModuleButton = () => {
   const onPress = () => {
@@ -204,13 +204,13 @@ export default NewModuleButton;
 In order to access your native module from JavaScript you need to first import `NativeModules` from React Native:
 
 ```jsx
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 ```
 
 You can then access the `CalendarModule` native module off of `NativeModules`.
 
 ```jsx
-const { CalendarModule } = NativeModules;
+const {CalendarModule} = NativeModules;
 ```
 
 Now that you have the CalendarModule native module available, you can invoke your native method `createCalendarEvent()`. Below it is added to the `onPress()` method in `NewModuleButton`:
@@ -258,8 +258,8 @@ To save consumers of your native module from needing to do that each time they w
 * 1. String name: A string representing the name of the event
 * 2. String location: A string representing the location of the event
 */
-import { NativeModules } from 'react-native';
-const { CalendarModule } = NativeModules;
+import {NativeModules} from 'react-native';
+const {CalendarModule} = NativeModules;
 export default CalendarModule;
 ```
 
@@ -340,7 +340,7 @@ public Map<String, Object> getConstants() {
 The constant can then be accessed by invoking `getConstants` on the native module in JS:
 
 ```jsx
-const { DEFAULT_EVENT_NAME } = CalendarModule.getConstants();
+const {DEFAULT_EVENT_NAME} = CalendarModule.getConstants();
 console.log(DEFAULT_EVENT_NAME);
 ```
 
@@ -379,9 +379,9 @@ const onPress = () => {
   CalendarModule.createCalendarEvent(
     'Party',
     'My House',
-    (eventId) => {
+    eventId => {
       console.log(`Created a new event with id ${eventId}`);
-    }
+    },
   );
 };
 ```
@@ -410,7 +410,7 @@ const onPress = () => {
         console.error(`Error found! ${error}`);
       }
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
@@ -430,12 +430,12 @@ const onPress = () => {
   CalendarModule.createCalendarEventCallback(
     'testName',
     'testLocation',
-    (error) => {
+    error => {
       console.error(`Error found! ${error}`);
     },
-    (eventId) => {
+    eventId => {
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
@@ -469,7 +469,7 @@ const onSubmit = async () => {
   try {
     const eventId = await CalendarModule.createCalendarEvent(
       'Party',
-      'My House'
+      'My House',
     );
     console.log(`Created a new event with id ${eventId}`);
   } catch (e) {
@@ -484,7 +484,7 @@ The reject method takes different combinations of the following arguments:
 String code, String message, WritableMap userInfo, Throwable throwable
 ```
 
-For more detail, you can find the `Promise.java` interface [here](https://github.com/facebook/react-native/blob/master/ReactAndroid/src/main/java/com/facebook/react/bridge/Promise.java#L1). If `userInfo` is not provided, ReactNative will set it to null. For the rest of the parameters React Native will use a default value. The `message` argument provides the error `message` shown at the top of an error call stack. Below is an example of the error message shown in JavaScript from the following reject call in Java.
+For more detail, you can find the `Promise.java` interface [here](https://github.com/facebook/react-native/blob/0.64-stable/ReactAndroid/src/main/java/com/facebook/react/bridge/Promise.java#L1). If `userInfo` is not provided, ReactNative will set it to null. For the rest of the parameters React Native will use a default value. The `message` argument provides the error `message` shown at the top of an error call stack. Below is an example of the error message shown in JavaScript from the following reject call in Java.
 
 Java reject call:
 
@@ -523,7 +523,7 @@ params.putString("eventProperty", "someValue");
 sendEvent(reactContext, "EventReminder", params);
 ```
 
-JavaScript modules can then register to receive events by `addListener` on the [NativeEventEmitter](https://github.com/facebook/react-native/blob/master/Libraries/EventEmitter/NativeEventEmitter.js) class.
+JavaScript modules can then register to receive events by `addListener` on the [NativeEventEmitter](https://github.com/facebook/react-native/blob/0.64-stable/Libraries/EventEmitter/NativeEventEmitter.js) class.
 
 ```jsx
 import { NativeEventEmitter, NativeModules } from 'react-native';

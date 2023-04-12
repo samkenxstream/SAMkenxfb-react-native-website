@@ -3,6 +3,12 @@ id: release-faq
 title: Release FAQ
 ---
 
+### Which versions are currently supported?
+
+We are supporting the latest version, and the two previous minor series. We also work on the next version being developed, which will become the new stable after its 0.Y.0 release.
+
+You can learn more about the [release support policy](https://github.com/reactwg/react-native-releases#releases-support-policy) in the releases repository.
+
 ### What is a qualified pick request?
 
 Judgement call, but using these dimensions to evaluate:
@@ -17,11 +23,6 @@ Judgement call, but using these dimensions to evaluate:
 - Is it a new issue on the release candidate?
 - Is it breaking a core experience of working in React Native?
 
-### What versions does the release community commit to supporting?
-
-We commit to handling issues on the current release and release candidate.
-Any versions prior to this, we cannot commit to supporting.
-
 ### When will my fix make it into a release?
 
 We follow a release cycle that is not strictly monthly - you can read more [about it here](https://github.com/react-native-community/discussions-and-proposals/issues/17). When creating a new release, we cut a new branch from `main` (e.g. `0.67-stable`), with all the merged commits up to this point. After this initial cut, new commits on `main` will only be included on this release if they get manually cherry picked. Otherwise, they will be included in the next stable version (when a new cut from `main` will happen). This means that once a pull request is merged to the [core `react-native` repo](https://github.com/facebook/react-native), it may take one or two months for the changes to make it into a stable React Native release.
@@ -32,9 +33,11 @@ To determine whether a fix or feature is present in a given release, you will ne
 
 Once you have the commit hash, navigate to `https://github.com/facebook/react-native/commit/<COMMIT_HASH>`. Look closely at the commit message, underneath which you will find a list of tags associated with the commit.
 These tags will tell you which releases contains this commit. For example, commit [a6768bfd70187634e587d7b2e92d2b6735a4037e](https://github.com/facebook/react-native/commit/a6768bfd70187634e587d7b2e92d2b6735a4037e) has the following tags as of this writing:
+
 ```plain
 v0.67.0-rc.3 v0.67.0-rc.2 v0.67.0-rc.1 v0.67.0-rc.0 v0.66.3 v0.66.2 v0.66.1 v0.66.0 v0.66.0-rc.4 v0.66.0-rc.3 v0.66.0-rc.2 v0.66.0-rc.1 v0.66.0-rc.0 latest
 ```
+
 These tags tell us that the commit first made it into the 0.66 release candidate, eventually landing in the 0.66 stable release. It is also present, as you'd expect, in the 0.67 release candidate (and should make it to 0.67 stable, and so on).
 
 If the commit is only present in `main` (i.e. has no tags), then the commit has yet to be picked up by a release (or it may have been included in a follow up cherry pick for a patch version). You can expect it to be included in the next release candidate that is cut once the designed features have all landed.

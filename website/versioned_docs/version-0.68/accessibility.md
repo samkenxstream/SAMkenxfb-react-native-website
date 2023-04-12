@@ -44,6 +44,23 @@ To use, set the `accessibilityLabel` property to a custom string on your View, T
 
 In the above example, the `accessibilityLabel` on the TouchableOpacity element would default to "Press me!". The label is constructed by concatenating all Text node children separated by spaces.
 
+### `accessibilityLabelledBy` <div class="label android">Android</div>
+
+A reference to another element [nativeID](view.md#nativeid) used to build complex forms.
+The value of `accessibilityLabelledBy` should match the `nativeID` of the related element:
+
+```jsx
+<View>
+  <Text nativeID="formLabel">Label for Input Field</Text>
+  <TextInput
+    accessibilityLabel="input"
+    accessibilityLabelledBy="formLabel"
+  />
+</View>
+```
+
+In the above example, the screenreader announces `Input, Edit Box for Label for Input Field` when focusing on the TextInput.
+
 ### `accessibilityHint`
 
 An accessibility hint helps users understand what will happen when they perform an action on the accessibility element when that result is not clear from the accessibility label.
@@ -174,12 +191,12 @@ In the case of two overlapping UI components with the same parent, default acces
 ```jsx
 <View style={styles.container}>
   <View
-    style={[styles.layout, { backgroundColor: 'green' }]}
+    style={[styles.layout, {backgroundColor: 'green'}]}
     importantForAccessibility="yes">
     <Text>First layout</Text>
   </View>
   <View
-    style={[styles.layout, { backgroundColor: 'yellow' }]}
+    style={[styles.layout, {backgroundColor: 'yellow'}]}
     importantForAccessibility="no-hide-descendants">
     <Text>Second layout</Text>
   </View>
@@ -233,11 +250,11 @@ To handle action requests, a component must implement an `onAccessibilityAction`
 <View
   accessible={true}
   accessibilityActions={[
-    { name: 'cut', label: 'cut' },
-    { name: 'copy', label: 'copy' },
-    { name: 'paste', label: 'paste' }
+    {name: 'cut', label: 'cut'},
+    {name: 'copy', label: 'copy'},
+    {name: 'paste', label: 'paste'},
   ]}
-  onAccessibilityAction={(event) => {
+  onAccessibilityAction={event => {
     switch (event.nativeEvent.actionName) {
       case 'cut':
         Alert.alert('Alert', 'cut action success');
@@ -262,16 +279,12 @@ The `AccessibilityInfo` API allows you to determine whether or not a screen read
 Sometimes it is useful to trigger an accessibility event on a UI component (i.e. when a custom view appears on a screen or set accessibility focus to a view). Native UIManager module exposes a method ‘sendAccessibilityEvent’ for this purpose. It takes two arguments: view tag and a type of an event. The supported event types are `typeWindowStateChanged`, `typeViewFocused` and `typeViewClicked`.
 
 ```jsx
-import {
-  Platform,
-  UIManager,
-  findNodeHandle
-} from 'react-native';
+import {Platform, UIManager, findNodeHandle} from 'react-native';
 
 if (Platform.OS === 'android') {
   UIManager.sendAccessibilityEvent(
     findNodeHandle(this),
-    UIManager.AccessibilityEventTypes.typeViewFocused
+    UIManager.AccessibilityEventTypes.typeViewFocused,
   );
 }
 ```

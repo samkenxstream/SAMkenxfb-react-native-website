@@ -4,7 +4,7 @@ You will need Node, the React Native command line interface, a JDK, and Android 
 
 While you can use any editor of your choice to develop your app, you will need to install Android Studio in order to set up the necessary tooling to build your React Native app for Android.
 
-<h3>Node, JDK</h3>
+<h3 id="jdk">Node, JDK</h3>
 
 We recommend installing Node via [Chocolatey](https://chocolatey.org), a popular package manager for Windows.
 
@@ -22,13 +22,13 @@ If you have already installed Node on your system, make sure it is Node 12 or ne
 
 > You can find additional installation options on [Node's Downloads page](https://nodejs.org/en/download/).
 
-> If you're using the latest version of Java Development Kit, you'll need to change the Gradle version of your project so it can recognize the JDK. You can do that by going to `{project root folder}\android\gradle\wrapper\gradle-wrapper.properties` and changing the `distributionUrl` value to upgrade the Gradle version. You can check out [here the lastest releases of Gradle](https://gradle.org/releases/).
+> If you're using the latest version of Java Development Kit, you'll need to change the Gradle version of your project so it can recognize the JDK. You can do that by going to `{project root folder}\android\gradle\wrapper\gradle-wrapper.properties` and changing the `distributionUrl` value to upgrade the Gradle version. You can check out [here the latest releases of Gradle](https://gradle.org/releases/).
 
 <h3>Android development environment</h3>
 
 Setting up your development environment can be somewhat tedious if you're new to Android development. If you're already familiar with Android development, there are a few things you may need to configure. In either case, please make sure to carefully follow the next few steps.
 
-<h4>1. Install Android Studio</h4>
+<h4 id="android-studio">1. Install Android Studio</h4>
 
 [Download and install Android Studio](https://developer.android.com/studio/index.html). While on Android Studio installation wizard, make sure the boxes next to all of the following items are checked:
 
@@ -43,11 +43,11 @@ Then, click "Next" to install all of these components.
 
 Once setup has finalized and you're presented with the Welcome screen, proceed to the next step.
 
-<h4>2. Install the Android SDK</h4>
+<h4 id="android-sdk">2. Install the Android SDK</h4>
 
 Android Studio installs the latest Android SDK by default. Building a React Native app with native code, however, requires the `Android 10 (Q)` SDK in particular. Additional Android SDKs can be installed through the SDK Manager in Android Studio.
 
-To do that, open Android Studio, click on "Configure" button and select "SDK Manager".
+To do that, open Android Studio, click on "More Actions" button and select "SDK Manager".
 
 ![Android Studio Welcome](/docs/assets/GettingStartedAndroidStudioWelcomeWindows.png)
 

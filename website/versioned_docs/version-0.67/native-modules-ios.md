@@ -74,7 +74,7 @@ RCT_EXPORT_MODULE(CalendarModuleFoo);
 The native module can then be accessed in JS like this:
 
 ```jsx
-const { CalendarModuleFoo } = ReactNative.NativeModules;
+const {CalendarModuleFoo} = ReactNative.NativeModules;
 ```
 
 If you do not specify a name, the JavaScript module name will match the Objective-C class name, with any "RCT" or "RK" prefixes removed.
@@ -89,7 +89,7 @@ RCT_EXPORT_MODULE();
 The native module can then be accessed in JS like this:
 
 ```jsx
-const { CalendarModule } = ReactNative.NativeModules;
+const {CalendarModule} = ReactNative.NativeModules;
 ```
 
 ### Export a Native Method to JavaScript
@@ -137,7 +137,7 @@ Find a place in your application where you would like to add a call to the nativ
 
 ```jsx
 import React from 'react';
-import { NativeModules, Button } from 'react-native';
+import {NativeModules, Button} from 'react-native';
 
 const NewModuleButton = () => {
   const onPress = () => {
@@ -159,13 +159,13 @@ export default NewModuleButton;
 In order to access your native module from JavaScript you need to first import `NativeModules` from React Native:
 
 ```jsx
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 ```
 
 You can then access the `CalendarModule` native module off of `NativeModules`.
 
 ```jsx
-const { CalendarModule } = NativeModules;
+const {CalendarModule} = NativeModules;
 ```
 
 Now that you have the CalendarModule native module available, you can invoke your native method `createCalendarEvent()`. Below it is added to the `onPress()` method in `NewModuleButton`:
@@ -213,8 +213,8 @@ To save consumers of your native module from needing to do that each time they w
 * 1. String name: A string representing the name of the event
 * 2. String location: A string representing the location of the event
 */
-import { NativeModules } from 'react-native';
-const { CalendarModule } = NativeModules;
+import {NativeModules} from 'react-native';
+const {CalendarModule} = NativeModules;
 export default CalendarModule;
 ```
 
@@ -269,7 +269,7 @@ When a native module method is invoked in JavaScript, React Native converts the 
 > - Number -> CGFloat
 > - Number -> float
 
-For iOS, you can also write native module methods with any argument type that is supported by the `RCTConvert` class (see [RCTConvert](https://github.com/facebook/react-native/blob/master/React/Base/RCTConvert.h) for details about what is supported). The RCTConvert helper functions all accept a JSON value as input and map it to a native Objective-C type or class.
+For iOS, you can also write native module methods with any argument type that is supported by the `RCTConvert` class (see [RCTConvert](https://github.com/facebook/react-native/blob/0.67-stable/React/Base/RCTConvert.h) for details about what is supported). The RCTConvert helper functions all accept a JSON value as input and map it to a native Objective-C type or class.
 
 ### Exporting Constants
 
@@ -330,9 +330,9 @@ const onSubmit = () => {
   CalendarModule.createCalendarEvent(
     'Party',
     '04-12-2020',
-    (eventId) => {
+    eventId => {
       console.log(`Created a new event with id ${eventId}`);
-    }
+    },
   );
 };
 ```
@@ -361,7 +361,7 @@ const onPress = () => {
         console.error(`Error found! ${error}`);
       }
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
@@ -392,17 +392,17 @@ const onPress = () => {
   CalendarModule.createCalendarEventCallback(
     'testName',
     'testLocation',
-    (error) => {
+    error => {
       console.error(`Error found! ${error}`);
     },
-    (eventId) => {
+    eventId => {
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
 
-If you want to pass error-like objects to JavaScript, use `RCTMakeError` from [`RCTUtils.h.`](https://github.com/facebook/react-native/blob/master/React/Base/RCTUtils.h) Right now this only passes an Error-shaped dictionary to JavaScript, but React Native aims to automatically generate real JavaScript Error objects in the future. You can also provide a `RCTResponseErrorBlock` argument, which is used for error callbacks and accepts an `NSError \* object`. Please note that this argument type will not be supported with TurboModules.
+If you want to pass error-like objects to JavaScript, use `RCTMakeError` from [`RCTUtils.h.`](https://github.com/facebook/react-native/blob/0.67-stable/React/Base/RCTUtils.h) Right now this only passes an Error-shaped dictionary to JavaScript, but React Native aims to automatically generate real JavaScript Error objects in the future. You can also provide a `RCTResponseErrorBlock` argument, which is used for error callbacks and accepts an `NSError \* object`. Please note that this argument type will not be supported with TurboModules.
 
 ### Promises
 
@@ -433,7 +433,7 @@ const onSubmit = async () => {
   try {
     const eventId = await CalendarModule.createCalendarEvent(
       'Party',
-      'my house'
+      'my house',
     );
     console.log(`Created a new event with id ${eventId}`);
   } catch (e) {
@@ -592,7 +592,7 @@ For those of you new to Swift and Objective-C, whenever you [mix the two languag
 #import <React/RCTBridgeModule.h>
 ```
 
-You can also use `RCT_EXTERN_REMAP_MODULE` and `_RCT_EXTERN_REMAP_METHOD` to alter the JavaScript name of the module or methods you are exporting. For more information see [`RCTBridgeModule`](https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h).
+You can also use `RCT_EXTERN_REMAP_MODULE` and `_RCT_EXTERN_REMAP_METHOD` to alter the JavaScript name of the module or methods you are exporting. For more information see [`RCTBridgeModule`](https://github.com/facebook/react-native/blob/0.67-stable/React/Base/RCTBridgeModule.h).
 
 > Important when making third party modules: Static libraries with Swift are only supported in Xcode 9 and later. In order for the Xcode project to build when you use Swift in the iOS static library you include in the module, your main app project must contain Swift code and a bridging header itself. If your app project does not contain any Swift code, a workaround can be a single empty .swift file and an empty bridging header.
 

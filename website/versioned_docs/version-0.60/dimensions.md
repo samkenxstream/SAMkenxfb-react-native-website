@@ -6,7 +6,7 @@ title: Dimensions
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
 
 ```jsx
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 ```
 
 You can get the application window's width and height using below code:
@@ -22,7 +22,7 @@ If you are targeting foldable devices or devices which can change the screen siz
 
 ### Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 ```SnackPlayer name=Dimensions

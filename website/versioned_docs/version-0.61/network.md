@@ -24,12 +24,12 @@ fetch('https://mywebsite.com/endpoint/', {
   method: 'POST',
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     firstParam: 'yourValue',
-    secondParam: 'yourOtherValue'
-  })
+    secondParam: 'yourOtherValue',
+  }),
 });
 ```
 
@@ -44,11 +44,11 @@ Networking is an inherently asynchronous operation. Fetch methods will return a 
 ```jsx
 function getMoviesFromApiAsync() {
   return fetch('https://reactnative.dev/movies.json')
-    .then((response) => response.json())
-    .then((responseJson) => {
+    .then(response => response.json())
+    .then(responseJson => {
       return responseJson.movies;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
     });
 }
@@ -60,7 +60,7 @@ You can also use the proposed ES2017 `async`/`await` syntax in a React Native ap
 async function getMoviesFromApi() {
   try {
     let response = await fetch(
-      'https://reactnative.dev/movies.json'
+      'https://reactnative.dev/movies.json',
     );
     let responseJson = await response.json();
     return responseJson.movies;
@@ -126,7 +126,7 @@ export default class FetchExample extends React.Component {
 }
 ```
 
-> By default, iOS will block any request that's not encrypted using [SSL](https://hosting.review/web-hosting-glossary/#12). If you need to fetch from a cleartext URL (one that begins with `http`) you will first need to [add an App Transport Security exception](integration-with-existing-apps.md#test-your-integration). If you know ahead of time what domains you will need access to, it is more secure to add exceptions only for those domains; if the domains are not known until runtime you can [disable ATS completely](integration-with-existing-apps.md#app-transport-security). Note however that from January 2017, [Apple's App Store review will require reasonable justification for disabling ATS](https://forums.developer.apple.com/thread/48979). See [Apple's documentation](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33) for more information.
+> By default, iOS will block any request that's not encrypted using [SSL](https://hosting.review/web-hosting-glossary/#12). If you need to fetch from a cleartext URL (one that begins with `http`) you will first need to [add an App Transport Security exception](integration-with-existing-apps.md#test-your-integration). If you know ahead of time what domains you will need access to, it is more secure to add exceptions only for those domains; if the domains are not known until runtime you can [disable ATS completely](publishing-to-app-store.md#1-enable-app-transport-security). Note however that from January 2017, [Apple's App Store review will require reasonable justification for disabling ATS](https://forums.developer.apple.com/thread/48979). See [Apple's documentation](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW33) for more information.
 
 ### Using Other Networking Libraries
 
@@ -134,7 +134,7 @@ The [XMLHttpRequest API](https://developer.mozilla.org/en-US/docs/Web/API/XMLHtt
 
 ```jsx
 var request = new XMLHttpRequest();
-request.onreadystatechange = (e) => {
+request.onreadystatechange = e => {
   if (request.readyState !== 4) {
     return;
   }
@@ -164,17 +164,17 @@ ws.onopen = () => {
   ws.send('something'); // send a message
 };
 
-ws.onmessage = (e) => {
+ws.onmessage = e => {
   // a message was received
   console.log(e.data);
 };
 
-ws.onerror = (e) => {
+ws.onerror = e => {
   // an error occurred
   console.log(e.message);
 };
 
-ws.onclose = (e) => {
+ws.onclose = e => {
   // connection closed
   console.log(e.code, e.reason);
 };

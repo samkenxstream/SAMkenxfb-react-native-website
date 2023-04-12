@@ -42,7 +42,7 @@ However, if you do hit any issues, we provide an option to opt-out of the new ro
 
 On Android, you will be able to override the `isConcurrentRootEnabled` in your ActivityDelegate (in the `MainActivity` file), and enable/disable Concurrent React.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 
 <TabItem value="java">
 
@@ -104,7 +104,7 @@ On iOS, you'll have access to the `concurrentRootEnabled` method on your `AppDel
 ///
 /// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
 /// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
-/// @return: `true` if the `concurrentRoot` feture is enabled. Otherwise, it returns `false`.
+/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
 - (BOOL)concurrentRootEnabled
 {
   // Switch this bool to turn on and off the concurrent root

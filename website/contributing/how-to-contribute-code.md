@@ -17,25 +17,25 @@ Please refer to the [Environment Setup](/docs/environment-setup) guide to setup 
 
 After cloning React Native, open the directory and run `yarn` to install its dependencies.
 
-Then, you can run several commands:
+Now you are set up to run several commands:
 
 - `yarn start` starts the Metro packager server.
 - `yarn lint` checks the code style.
 - `yarn format` automatically formats your code.
-- `yarn test` runs the JavaScript test suite.
-- `yarn test --watch` runs an interactive JavaScript test watcher.
-- `yarn test <pattern>` runs JavaScript tests with matching filenames.
+- `yarn test` runs the Jest-based JavaScript test suite.
+  - `yarn test --watch` runs an interactive JavaScript test watcher.
+  - `yarn test <pattern>` runs JavaScript tests with matching filenames.
 - `yarn flow` runs the [Flow](https://flowtype.org/) typechecks.
-- `yarn flow-check-android` does a full Flow check over `*.android.js` files.
-- `yarn flow-check-ios` does a full Flow check over `*.ios.js` files.
+  - `yarn flow-check-android` does a full Flow check over `*.android.js` files.
+  - `yarn flow-check-ios` does a full Flow check over `*.ios.js` files.
+- `yarn test-typescript` runs the [TypeScript](https://www.typescriptlang.org/) typechecks.
 - `yarn test-ios` runs the iOS test suite (macOS required).
-- `node ./scripts/run-ci-e2e-tests.js --js --android --ios` runs the end-to-tend JavaScript, Android, and iOS tests.
 
 ## Testing your Changes
 
 Tests help us prevent regressions from being introduced to the codebase. We recommend running `yarn test` or the platform-specific scripts above to make sure you don't introduce any regressions as you work on your change.
 
-The GitHub repository is [continuously tested](/contributing/how-to-run-and-write-tests#continuous-testing) using CircleCI and Appveyor, the results of which are available through the Checks functionality on [commits](https://github.com/facebook/react-native/commits/main) and pull requests.
+The GitHub repository is [continuously tested](/contributing/how-to-run-and-write-tests#continuous-testing) using CircleCI, the results of which are available through the Checks functionality on [commits](https://github.com/facebook/react-native/commits/main) and pull requests.
 
 You can learn more about running and writing tests on the [How to Run and Write Tests](/contributing/how-to-run-and-write-tests) page.
 
@@ -76,7 +76,7 @@ Code-level contributions to React Native generally come in the form of [a pull r
 
 If all goes well, your pull request will be merged. If it is not merged, maintainers will do their best to explain their reasoning.
 
-If this is your first time sending a pull request, we have created a [step-by-step guide to help you get started](contributing/how-to-open-a-pull-request). For more detailed information on how pull requests are handled, see the [Managing Pull Requests page](Managing-Pull-Requests).
+If this is your first time sending a pull request, we have created a [step-by-step guide to help you get started](/contributing/how-to-open-a-pull-request). For more detailed information on how pull requests are handled, see the [Managing Pull Requests page](Managing-Pull-Requests).
 
 ### Contributor License Agreement
 

@@ -3,8 +3,6 @@ id: touchableopacity
 title: TouchableOpacity
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
-
 > If you're looking for a more extensive and future-proof way to handle touch-based input, check out the [Pressable](pressable.md) API.
 
 A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.
@@ -13,12 +11,9 @@ Opacity is controlled by wrapping the children in an `Animated.View`, which is a
 
 ## Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
-
-```SnackPlayer name=TouchableOpacity%20Function%20Component%20Example
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+```SnackPlayer name=TouchableOpacity%20Example
+import React, {useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 const App = () => {
   const [count, setCount] = useState(0);
@@ -29,10 +24,7 @@ const App = () => {
       <View style={styles.countContainer}>
         <Text>Count: {count}</Text>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={onPress}
-      >
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text>Press Here</Text>
       </TouchableOpacity>
     </View>
@@ -42,82 +34,22 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10
+    justifyContent: 'center',
+    paddingHorizontal: 10,
   },
   button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
   },
   countContainer: {
-    alignItems: "center",
-    padding: 10
-  }
+    alignItems: 'center',
+    padding: 10,
+  },
 });
 
 export default App;
 ```
-
-</TabItem>
-<TabItem value="classical">
-
-```SnackPlayer name=TouchableOpacity%20Class%20Component%20Example
-import React, { Component } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { count: 0 };
-  }
-
-  onPress = () => {
-    this.setState({
-      count: this.state.count + 1
-    });
-  };
-
-  render() {
-    const { count } = this.state;
-    return (
-      <View style={styles.container}>
-        <View style={styles.countContainer}>
-          <Text>Count: {count}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={this.onPress}
-        >
-          <Text>Press Here</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 10
-  },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
-  },
-  countContainer: {
-    alignItems: "center",
-    padding: 10
-  }
-});
-
-export default App;
-```
-
-</TabItem>
-</Tabs>
 
 ---
 

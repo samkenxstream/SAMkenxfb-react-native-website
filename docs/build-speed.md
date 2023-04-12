@@ -6,23 +6,21 @@ title: Speeding up your Build phase
 Building your React Native app could be **expensive** and take several minutes of developers time.
 This can be problematic as your project grows and generally in bigger organizations with multiple React Native developers.
 
-With [the New React Native Architecture](/docs/next/new-architecture-app-modules-android), this problem is becoming more critical
-as you might have to compile some native C++ code in your project with the Android NDK in addition to the native code already necessary for the iOS and Android platforms.
-
 To mitigate this performance hit, this page shares some suggestions on how to **improve your build time**.
+
+:::info
+If you're noticing slower build time with the **New Architecture on Android**, we recommend to upgrade to React Native 0.71
+:::
 
 ## Build only one ABI during development (Android-only)
 
-When building your android app locally, you build all the 4 ABIs by default: `armeabi-v7a`, `arm64-v8a`, `x86` & `x86_64`.
 When building your android app locally, by default you build all the 4 [Application Binary Interfaces (ABIs)](https://developer.android.com/ndk/guides/abis) : `armeabi-v7a`, `arm64-v8a`, `x86` & `x86_64`.
 
 However, you probably don't need to build all of them if you're building locally and testing your emulator or on a physical device.
 
-This should reduce your build time by a **~75% factor**.
+This should reduce your **native build time** by a ~75% factor.
 
-If you're using the React Native CLI, you can use the `--active-arch-only` flag together with the `run-android` command.
-This flag will make sure the correct ABI is picked up from either the running emulator or the plugged in phone.
-To confirm that this approach is working fine, you'll see a message like `info Detected architectures arm64-v8a` on console.
+If you're using the React Native CLI, you can add the `--active-arch-only` flag to the `run-android` command. This flag will make sure the correct ABI is picked up from either the running emulator or the plugged in phone. To confirm that this approach is working fine, you'll see a message like `info Detected architectures arm64-v8a` on console.
 
 ```
 $ yarn react-native run-android --active-arch-only
@@ -45,7 +43,7 @@ $ ./gradlew :app:assembleDebug -PreactNativeArchitectures=x86,x86_64
 
 This can be useful if you wish to build your Android App on a CI and use a matrix to parallelize the build of the different architectures.
 
-If you wish, you can also override this value locally, using the `gradle.properties` file you have in the [top level folder](https://github.com/facebook/react-native/blob/19cf70266eb8ca151aa0cc46ac4c09cb987b2ceb/template/android/gradle.properties#L30-L33) of your project:
+If you wish, you can also override this value locally, using the `gradle.properties` file you have in the [top-level folder](https://github.com/facebook/react-native/blob/19cf70266eb8ca151aa0cc46ac4c09cb987b2ceb/template/android/gradle.properties#L30-L33) of your project:
 
 ```
 # Use this property to specify which architecture you want to build.
@@ -76,16 +74,16 @@ if an intermediate compilation result was originally stored.
 
 To install it, you can follow the [official installation instructions](https://github.com/ccache/ccache/blob/master/doc/INSTALL.md).
 
-On Mac OS, we can install ccache with `brew install ccache`.
+On macOS, we can install ccache with `brew install ccache`.
 Once installed you can configure it as follows to cache NDK compile results:
 
 ```
-ln -s ccache /usr/local/bin/gcc
-ln -s ccache /usr/local/bin/g++
-ln -s ccache /usr/local/bin/cc
-ln -s ccache /usr/local/bin/c++
-ln -s ccache /usr/local/bin/clang
-ln -s ccache /usr/local/bin/clang++
+ln -s $(which ccache) /usr/local/bin/gcc
+ln -s $(which ccache) /usr/local/bin/g++
+ln -s $(which ccache) /usr/local/bin/cc
+ln -s $(which ccache) /usr/local/bin/c++
+ln -s $(which ccache) /usr/local/bin/clang
+ln -s $(which ccache) /usr/local/bin/clang++
 ```
 
 This will create symbolic links to `ccache` inside the `/usr/local/bin/` which are called `gcc`, `g++`, and so on.
@@ -197,40 +195,3 @@ This could be specifically useful in bigger organizations that are doing frequen
 
 We recommend to use [sccache](https://github.com/mozilla/sccache) to achieve this.
 We defer to the sccache [distributed compilation quickstart](https://github.com/mozilla/sccache/blob/main/docs/DistributedQuickstart.md) for instructions on how to setup and use this tool.
-
-## Troubleshooting
-
-Please find instructions on how to solve some of the most common build performance issue in this section.
-
-### Clean Android build with `--active-arch-only` is failing.
-
-If you're using the `--active-arch-only` flag on a clean Android build (e.g. after having cloned a project or after having created a new project) you might experience a build failures as follows:
-
-```
-Android NDK: ERROR:/.../android/app/src/main/jni/Android.mk:fb: LOCAL_SRC_FILES points to a missing file
-Android NDK: Check that /.../android/app/build/react-ndk/exported/armeabi-v7a/libfb.so exists or that its path is correct
-
-/.../Android/sdk/ndk/24.0.8079956/build/core/prebuilt-library.mk:51: *** Android NDK: Aborting    .  Stop.
-```
-
-To overcome this, you can either:
-
-1. Run a full build before without `--active-arch-only`. Subsequent builds with `--active-arch-only` will work correctly.
-2. Add an `abiFilter` block inside your `android/app/build.gradle` file [as follows](https://github.com/facebook/react-native/commit/5dff920177220ae5f4e37c662c63c27ebf696c83):
-
-```diff
-  android {
-    defaultConfig {
-
-      // ...
-
-+     if (!enableSeparateBuildPerCPUArchitecture) {
-+       ndk {
-+         abiFilters (*reactNativeArchitectures())
-+       }
-+     }
-    }
-  }
-```
-
-Projects created with React Native 0.69 and subsequent versions already contain this fix.

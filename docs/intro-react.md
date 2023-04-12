@@ -6,7 +6,7 @@ description: To understand React Native fully, you need a solid foundation in Re
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
 
-React Native runs on [React](https://reactjs.org/), a popular open source library for building user interfaces with JavaScript. To make the most of React Native, it helps to understand React itself. This section can get you started or can serve as a refresher course.
+React Native runs on [React](https://react.dev/), a popular open source library for building user interfaces with JavaScript. To make the most of React Native, it helps to understand React itself. This section can get you started or can serve as a refresher course.
 
 We’re going to cover the core concepts behind React:
 
@@ -15,38 +15,33 @@ We’re going to cover the core concepts behind React:
 - props
 - state
 
-If you want to dig deeper, we encourage you to check out [React’s official documentation](https://reactjs.org/docs/getting-started.html).
+If you want to dig deeper, we encourage you to check out [React’s official documentation](https://react.dev/learn).
 
 ## Your first component
 
 The rest of this introduction to React uses cats in its examples: friendly, approachable creatures that need names and a cafe to work in. Here is your very first Cat component:
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
-
 ```SnackPlayer name=Your%20Cat
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 
 const Cat = () => {
-  return (
-    <Text>Hello, I am your cat!</Text>
-  );
-}
+  return <Text>Hello, I am your cat!</Text>;
+};
 
 export default Cat;
 ```
 
 Here is how you do it: To define your `Cat` component, first use JavaScript’s [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) to import React and React Native’s [`Text`](/docs/next/text) Core Component:
 
-```jsx
+```tsx
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 ```
 
 Your component starts as a function:
 
-```jsx
+```tsx
 const Cat = () => {};
 ```
 
@@ -54,7 +49,7 @@ You can think of components as blueprints. Whatever a function component returns
 
 Here the `Cat` component will render a `<Text>` element:
 
-```jsx
+```tsx
 const Cat = () => {
   return <Text>Hello, I am your cat!</Text>;
 };
@@ -62,7 +57,7 @@ const Cat = () => {
 
 You can export your function component with JavaScript’s [`export default`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export) for use throughout your app like so:
 
-```jsx
+```tsx
 const Cat = () => {
   return <Text>Hello, I am your cat!</Text>;
 };
@@ -70,105 +65,70 @@ const Cat = () => {
 export default Cat;
 ```
 
-</TabItem>
-<TabItem value="classical">
-
-Class components tend to be a bit more verbose than function components.
-
-```SnackPlayer name=Your%20Cat
-import React, { Component } from 'react';
-import { Text } from 'react-native';
-
-class Cat extends Component {
-  render() {
-    return (
-      <Text>Hello, I am your cat!</Text>
-    );
-  }
-}
-
-export default Cat;
-```
-
-You additionally import `Component` from React:
-
-```jsx
-import React, { Component } from 'react';
-```
-
-Your component starts as a class extending `Component` instead of as a function:
-
-```jsx
-class Cat extends Component {}
-```
-
-Class components have a `render()` function. Whatever is returned inside it is rendered as a React element:
-
-```jsx
-class Cat extends Component {
-  render() {
-    return <Text>Hello, I am your cat!</Text>;
-  }
-}
-```
-
-And as with function components, you can export your class component:
-
-```jsx
-class Cat extends Component {
-  render() {
-    return <Text>Hello, I am your cat!</Text>;
-  }
-}
-
-export default Cat;
-```
-
-</TabItem>
-</Tabs>
-
 > This is one of many ways to export your component. This kind of export works well with the Snack Player. However, depending on your app’s file structure, you might need to use a different convention. This [handy cheatsheet on JavaScript imports and exports](https://medium.com/dailyjs/javascript-module-cheatsheet-7bd474f1d829) can help.
 
 Now take a closer look at that `return` statement. `<Text>Hello, I am your cat!</Text>` is using a kind of JavaScript syntax that makes writing elements convenient: JSX.
 
 ## JSX
 
-React and React Native use **JSX,** a syntax that lets you write elements inside JavaScript like so: `<Text>Hello, I am your cat!</Text>`. The React docs have [a comprehensive guide to JSX](https://reactjs.org/docs/jsx-in-depth.html) you can refer to learn even more. Because JSX is JavaScript, you can use variables inside it. Here you are declaring a name for the cat, `name`, and embedding it with curly braces inside `<Text>`.
+React and React Native use **JSX,** a syntax that lets you write elements inside JavaScript like so: `<Text>Hello, I am your cat!</Text>`. The React docs have [a comprehensive guide to JSX](https://react.dev/learn/writing-markup-with-jsx) you can refer to learn even more. Because JSX is JavaScript, you can use variables inside it. Here you are declaring a name for the cat, `name`, and embedding it with curly braces inside `<Text>`.
 
 ```SnackPlayer name=Curly%20Braces
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 
 const Cat = () => {
-  const name = "Maru";
-  return (
-    <Text>Hello, I am {name}!</Text>
-  );
-}
+  const name = 'Maru';
+  return <Text>Hello, I am {name}!</Text>;
+};
 
 export default Cat;
 ```
 
 Any JavaScript expression will work between curly braces, including function calls like `{getFullName("Rum", "Tum", "Tugger")}`:
 
-```SnackPlayer name=Curly%20Braces
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
+
+```SnackPlayer name=Curly%20Braces&ext=js
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 
 const getFullName = (firstName, secondName, thirdName) => {
-  return firstName + " " + secondName + " " + thirdName;
-}
+  return firstName + ' ' + secondName + ' ' + thirdName;
+};
 
 const Cat = () => {
-  return (
-    <Text>
-      Hello, I am {getFullName("Rum", "Tum", "Tugger")}!
-    </Text>
-  );
-}
+  return <Text>Hello, I am {getFullName('Rum', 'Tum', 'Tugger')}!</Text>;
+};
 
 export default Cat;
 ```
+
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Curly%20Braces&ext=tsx
+import React from 'react';
+import {Text} from 'react-native';
+
+const getFullName = (
+  firstName: string,
+  secondName: string,
+  thirdName: string,
+) => {
+  return firstName + ' ' + secondName + ' ' + thirdName;
+};
+
+const Cat = () => {
+  return <Text>Hello, I am {getFullName('Rum', 'Tum', 'Tugger')}!</Text>;
+};
+
+export default Cat;
+```
+
+</TabItem>
+</Tabs>
 
 You can think of curly braces as creating a portal into JS functionality in your JSX!
 
@@ -182,7 +142,7 @@ For example, you can nest [`Text`](text) and [`TextInput`](textinput) inside a [
 
 ```SnackPlayer name=Custom%20Components
 import React from 'react';
-import { Text, TextInput, View } from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 
 const Cat = () => {
   return (
@@ -192,20 +152,20 @@ const Cat = () => {
         style={{
           height: 40,
           borderColor: 'gray',
-          borderWidth: 1
+          borderWidth: 1,
         }}
         defaultValue="Name me!"
       />
     </View>
   );
-}
+};
 
 export default Cat;
 ```
 
 #### Developer notes
 
-<Tabs groupId="guide" defaultValue="web" values={constants.getDevNotesTabs(["android", "web"])}>
+<Tabs groupId="guide" queryString defaultValue="web" values={constants.getDevNotesTabs(["android", "web"])}>
 
 <TabItem value="web">
 
@@ -223,7 +183,7 @@ You can render this component multiple times and in multiple places without repe
 
 ```SnackPlayer name=Multiple%20Components
 import React from 'react';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 
 const Cat = () => {
   return (
@@ -231,7 +191,7 @@ const Cat = () => {
       <Text>I am also a cat!</Text>
     </View>
   );
-}
+};
 
 const Cafe = () => {
   return (
@@ -242,7 +202,7 @@ const Cafe = () => {
       <Cat />
     </View>
   );
-}
+};
 
 export default Cafe;
 ```
@@ -255,17 +215,20 @@ You can put as many cats in your cafe as you like. Each `<Cat>` renders a unique
 
 **Props** is short for “properties”. Props let you customize React components. For example, here you pass each `<Cat>` a different `name` for `Cat` to render:
 
-```SnackPlayer name=Multiple%20Props
-import React from 'react';
-import { Text, View } from 'react-native';
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-const Cat = (props) => {
+```SnackPlayer name=Multiple%20Props&ext=js
+import React from 'react';
+import {Text, View} from 'react-native';
+
+const Cat = props => {
   return (
     <View>
       <Text>Hello, I am {props.name}!</Text>
     </View>
   );
-}
+};
 
 const Cafe = () => {
   return (
@@ -275,28 +238,65 @@ const Cafe = () => {
       <Cat name="Spot" />
     </View>
   );
-}
+};
 
 export default Cafe;
 ```
+
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Multiple%20Props&ext=tsx
+import React from 'react';
+import {Text, View} from 'react-native';
+
+type CatProps = {
+  name: string;
+};
+
+const Cat = (props: CatProps) => {
+  return (
+    <View>
+      <Text>Hello, I am {props.name}!</Text>
+    </View>
+  );
+};
+
+const Cafe = () => {
+  return (
+    <View>
+      <Cat name="Maru" />
+      <Cat name="Jellylorum" />
+      <Cat name="Spot" />
+    </View>
+  );
+};
+
+export default Cafe;
+```
+
+</TabItem>
+</Tabs>
 
 Most of React Native’s Core Components can be customized with props, too. For example, when using [`Image`](image), you pass it a prop named [`source`](image#source) to define what image it shows:
 
 ```SnackPlayer name=Props
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import {Text, View, Image} from 'react-native';
 
 const CatApp = () => {
   return (
     <View>
       <Image
-        source={{uri: "https://reactnative.dev/docs/assets/p_cat1.png"}}
+        source={{
+          uri: 'https://reactnative.dev/docs/assets/p_cat1.png',
+        }}
         style={{width: 200, height: 200}}
       />
       <Text>Hello, I am your cat!</Text>
     </View>
   );
-}
+};
 
 export default CatApp;
 ```
@@ -315,33 +315,33 @@ While you can think of props as arguments you use to configure how components re
 
 The following example takes place in a cat cafe where two hungry cats are waiting to be fed. Their hunger, which we expect to change over time (unlike their names), is stored as state. To feed the cats, press their buttons—which will update their state.
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
+You can add state to a component by calling [React’s `useState` Hook](https://react.dev/learn/state-a-components-memory). A Hook is a kind of function that lets you “hook into” React features. For example, `useState` is a Hook that lets you add state to function components. You can learn more about [other kinds of Hooks in the React documentation.](https://react.dev/reference/react)
 
-You can add state to a component by calling [React’s `useState` Hook](https://reactjs.org/docs/hooks-state.html). A Hook is a kind of function that lets you “hook into” React features. For example, `useState` is a Hook that lets you add state to function components. You can learn more about [other kinds of Hooks in the React documentation.](https://reactjs.org/docs/hooks-intro.html)
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-```SnackPlayer name=State
-import React, { useState } from "react";
-import { Button, Text, View } from "react-native";
+```SnackPlayer name=State&ext=js
+import React, {useState} from 'react';
+import {Button, Text, View} from 'react-native';
 
-const Cat = (props) => {
+const Cat = props => {
   const [isHungry, setIsHungry] = useState(true);
 
   return (
     <View>
       <Text>
-        I am {props.name}, and I am {isHungry ? "hungry" : "full"}!
+        I am {props.name}, and I am {isHungry ? 'hungry' : 'full'}!
       </Text>
       <Button
         onPress={() => {
           setIsHungry(false);
         }}
         disabled={!isHungry}
-        title={isHungry ? "Pour me some milk, please!" : "Thank you!"}
+        title={isHungry ? 'Pour me some milk, please!' : 'Thank you!'}
       />
     </View>
   );
-}
+};
 
 const Cafe = () => {
   return (
@@ -350,21 +350,66 @@ const Cafe = () => {
       <Cat name="Spot" />
     </>
   );
-}
+};
 
 export default Cafe;
 ```
 
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=State&ext=tsx
+import React, {useState} from 'react';
+import {Button, Text, View} from 'react-native';
+
+type CatProps = {
+  name: string;
+};
+
+const Cat = (props: CatProps) => {
+  const [isHungry, setIsHungry] = useState(true);
+
+  return (
+    <View>
+      <Text>
+        I am {props.name}, and I am {isHungry ? 'hungry' : 'full'}!
+      </Text>
+      <Button
+        onPress={() => {
+          setIsHungry(false);
+        }}
+        disabled={!isHungry}
+        title={isHungry ? 'Pour me some milk, please!' : 'Thank you!'}
+      />
+    </View>
+  );
+};
+
+const Cafe = () => {
+  return (
+    <>
+      <Cat name="Munkustrap" />
+      <Cat name="Spot" />
+    </>
+  );
+};
+
+export default Cafe;
+```
+
+</TabItem>
+</Tabs>
+
 First, you will want to import `useState` from React like so:
 
-```jsx
-import React, { useState } from 'react';
+```tsx
+import React, {useState} from 'react';
 ```
 
 Then you declare the component’s state by calling `useState` inside its function. In this example, `useState` creates an `isHungry` state variable:
 
-```jsx
-const Cat = (props) => {
+```tsx
+const Cat = (props: CatProps) => {
   const [isHungry, setIsHungry] = useState(true);
   // ...
 };
@@ -381,7 +426,7 @@ It doesn’t matter what names you use. But it can be handy to think of the patt
 
 Next you add the [`Button`](button) Core Component and give it an `onPress` prop:
 
-```jsx
+```tsx
 <Button
   onPress={() => {
     setIsHungry(false);
@@ -392,7 +437,7 @@ Next you add the [`Button`](button) Core Component and give it an `onPress` prop
 
 Now, when someone presses the button, `onPress` will fire, calling the `setIsHungry(false)`. This sets the state variable `isHungry` to `false`. When `isHungry` is false, the `Button`’s `disabled` prop is set to `true` and its `title` also changes:
 
-```jsx
+```tsx
 <Button
   //..
   disabled={!isHungry}
@@ -404,7 +449,7 @@ Now, when someone presses the button, `onPress` will fire, calling the `setIsHun
 
 Finally, put your cats inside a `Cafe` component:
 
-```jsx
+```tsx
 const Cafe = () => {
   return (
     <>
@@ -415,125 +460,7 @@ const Cafe = () => {
 };
 ```
 
-</TabItem>
-<TabItem value="classical">
-
-The older class components approach is a little different when it comes to state.
-
-```SnackPlayer name=State%20and%20Class%20Components
-import React, { Component } from "react";
-import { Button, Text, View } from "react-native";
-
-class Cat extends Component {
-  state = { isHungry: true };
-
-  render() {
-    return (
-      <View>
-        <Text>
-          I am {this.props.name}, and I am
-          {this.state.isHungry ? " hungry" : " full"}!
-        </Text>
-        <Button
-          onPress={() => {
-            this.setState({ isHungry: false });
-          }}
-          disabled={!this.state.isHungry}
-          title={
-            this.state.isHungry ? "Pour me some milk, please!" : "Thank you!"
-          }
-        />
-      </View>
-    );
-  }
-}
-
-class Cafe extends Component {
-  render() {
-    return (
-      <>
-        <Cat name="Munkustrap" />
-        <Cat name="Spot" />
-      </>
-    );
-  }
-}
-
-export default Cafe;
-```
-
-As always with class components, you must import the `Component` class from React:
-
-```jsx
-import React, { Component } from 'react';
-```
-
-In class components, state is stored in a state object:
-
-```jsx
-export class Cat extends Component {
-  state = { isHungry: true };
-  //..
-}
-```
-
-As with accessing props with `this.props`, you access this object inside your component with `this.state`:
-
-```jsx
-<Text>
-  I am {this.props.name}, and I am
-  {this.state.isHungry ? ' hungry' : ' full'}!
-</Text>
-```
-
-And you set individual values inside the state object by passing an object with the key value pair for state and its new value to `this.setState()`:
-
-```jsx
-<Button
-  onPress={() => {
-    this.setState({ isHungry: false });
-  }}
-  // ..
-/>
-```
-
-> Do not change your component's state directly by assigning it a new value with `this.state.isHungry = false`. Calling `this.setState()` allows React to track changes made to state that trigger rerendering. Setting state directly can break your app's reactivity!
-
-When `this.state.isHungry` is false, the `Button`’s `disabled` prop is set to `true` and its `title` also changes:
-
-```jsx
-<Button
-  // ..
-  disabled={!this.state.isHungry}
-  title={
-    this.state.isHungry
-      ? 'Pour me some milk, please!'
-      : 'Thank you!'
-  }
-/>
-```
-
-Finally, put your cats inside a `Cafe` component:
-
-```jsx
-class Cafe extends Component {
-  render() {
-    return (
-      <>
-        <Cat name="Munkustrap" />
-        <Cat name="Spot" />
-      </>
-    );
-  }
-}
-
-export default Cafe;
-```
-
-</TabItem>
-</Tabs>
-
-> See the `<>` and `</>` above? These bits of JSX are [fragments](https://reactjs.org/docs/fragments.html). Adjacent JSX elements must be wrapped in an enclosing tag. Fragments let you do that without nesting an extra, unnecessary wrapping element like `View`.
+> See the `<>` and `</>` above? These bits of JSX are [fragments](https://react.dev/reference/react/Fragment). Adjacent JSX elements must be wrapped in an enclosing tag. Fragments let you do that without nesting an extra, unnecessary wrapping element like `View`.
 
 ---
 

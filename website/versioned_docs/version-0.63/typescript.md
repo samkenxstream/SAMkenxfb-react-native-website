@@ -25,7 +25,7 @@ npx react-native init MyApp --template react-native-template-typescript
 
 You can use [Expo][expo] which has two TypeScript templates:
 
-<Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
+<Tabs groupId="package-manager" queryString defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
 <TabItem value="npm">
 
 ```shell
@@ -46,7 +46,7 @@ expo init MyTSProject
 
 Or you could use [Ignite][ignite], which also has a TypeScript template:
 
-<Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
+<Tabs groupId="package-manager" queryString defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
 <TabItem value="npm">
 
 ```shell
@@ -69,7 +69,7 @@ ignite new MyTSProject
 
 1. Add TypeScript and the types for React Native and Jest to your project.
 
-<Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
+<Tabs groupId="package-manager" queryString defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
 <TabItem value="npm">
 
 ```shell
@@ -116,7 +116,14 @@ yarn add -D typescript @types/jest @types/react @types/react-native @types/react
 ```js
 module.exports = {
   preset: 'react-native',
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node']
+  moduleFileExtensions: [
+    'ts',
+    'tsx',
+    'js',
+    'jsx',
+    'json',
+    'node',
+  ],
 };
 ```
 
@@ -136,16 +143,16 @@ You can provide an interface for a React Component's [Props](props) and [State](
 
 ```tsx title="components/Hello.tsx"
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
 export interface Props {
   name: string;
   enthusiasmLevel?: number;
 }
 
-const Hello: React.FC<Props> = (props) => {
+const Hello: React.FC<Props> = props => {
   const [enthusiasmLevel, setEnthusiasmLevel] = React.useState(
-    props.enthusiasmLevel
+    props.enthusiasmLevel,
   );
 
   const onIncrement = () =>
@@ -186,23 +193,23 @@ const Hello: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   buttons: {
     flexDirection: 'row',
     minHeight: 70,
     alignItems: 'stretch',
     alignSelf: 'center',
-    borderWidth: 5
+    borderWidth: 5,
   },
   button: {
     flex: 1,
-    paddingVertical: 0
+    paddingVertical: 0,
   },
   greeting: {
     color: '#999',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default Hello;
@@ -235,7 +242,7 @@ To use custom path aliases with TypeScript, you need to set the path aliases to 
 
 2. Add [`babel-plugin-module-resolver`][bpmr] as a development package to your project:
 
-<Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
+<Tabs groupId="package-manager" queryString defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
 <TabItem value="npm">
 
 ```shell

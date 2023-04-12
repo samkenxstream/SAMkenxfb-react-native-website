@@ -3,6 +3,10 @@ id: native-components-ios
 title: iOS Native UI Components
 ---
 
+import NativeDeprecated from './the-new-architecture/\_markdown_native_deprecation.mdx'
+
+<NativeDeprecated />
+
 There are tons of native UI widgets out there ready to be used in the latest apps - some of them are part of the platform, others are available as third-party libraries, and still more might be in use in your very own portfolio. React Native has several of the most critical platform components already wrapped, like `ScrollView` and `TextInput`, but not all of them, and certainly not ones you might have written yourself for a previous app. Fortunately, we can wrap up these existing components for seamless integration with your React Native application.
 
 Like the native module guide, this too is a more advanced guide that assumes you are somewhat familiar with iOS programming. This guide will show you how to build a native UI component, walking you through the implementation of a subset of the existing `MapView` component available in the core React Native library.
@@ -53,20 +57,20 @@ Apple frameworks use two-letter prefixes, and React Native uses `RCT` as a prefi
 
 Then you need a little bit of JavaScript to make this a usable React component:
 
-```jsx title='MapView.js'
-import { requireNativeComponent } from 'react-native';
+```tsx title="MapView.tsx"
+import {requireNativeComponent} from 'react-native';
 
 // requireNativeComponent automatically resolves 'RNTMap' to 'RNTMapManager'
 module.exports = requireNativeComponent('RNTMap');
 ```
 
-```jsx title='MyApp.js'
+```tsx title="MyApp.tsx"
 import MapView from './MapView.js';
 
 ...
 
 render() {
-  return <MapView style={{ flex: 1 }} />;
+  return <MapView style={{flex: 1}} />;
 }
 ```
 
@@ -76,7 +80,7 @@ Make sure to use `RNTMap` here. We want to require the manager here, which will 
 When rendering, don't forget to stretch the view, otherwise you'll be staring at a blank screen.
 :::
 
-```jsx
+```tsx
   render() {
     return <MapView style={{flex: 1}} />;
   }
@@ -96,16 +100,16 @@ Note that we explicitly specify the type as `BOOL` - React Native uses `RCTConve
 
 Now to actually disable zooming, we set the property in JS:
 
-```jsx title='MyApp.js'
-<MapView zoomEnabled={false} style={{ flex: 1 }} />
+```tsx title="MyApp.tsx"
+<MapView zoomEnabled={false} style={{flex: 1}} />
 ```
 
 To document the properties (and which values they accept) of our MapView component we'll add a wrapper component and document the interface with React `PropTypes`:
 
-```jsx title='MapView.js'
+```tsx title="MapView.tsx"
 import PropTypes from 'prop-types';
 import React from 'react';
-import { requireNativeComponent } from 'react-native';
+import {requireNativeComponent} from 'react-native';
 
 class MapView extends React.Component {
   render() {
@@ -118,7 +122,7 @@ MapView.propTypes = {
    * A Boolean value that determines whether the user may use pinch
    * gestures to zoom in and out of the map.
    */
-  zoomEnabled: PropTypes.bool
+  zoomEnabled: PropTypes.bool,
 };
 
 var RNTMap = requireNativeComponent('RNTMap');
@@ -184,7 +188,7 @@ These conversion functions are designed to safely process any JSON that the JS m
 
 To finish up support for the `region` prop, we need to document it in `propTypes`:
 
-```jsx title='MapView.js'
+```tsx title="MapView.tsx"
 MapView.propTypes = {
   /**
    * A Boolean value that determines whether the user may use pinch
@@ -210,12 +214,12 @@ MapView.propTypes = {
      * to be displayed.
      */
     latitudeDelta: PropTypes.number.isRequired,
-    longitudeDelta: PropTypes.number.isRequired
-  })
+    longitudeDelta: PropTypes.number.isRequired,
+  }),
 };
 ```
 
-```jsx title='MyApp.js'
+```tsx title="MyApp.tsx"
 render() {
   var region = {
     latitude: 37.48,
@@ -227,7 +231,7 @@ render() {
     <MapView
       region={region}
       zoomEnabled={false}
-      style={{ flex: 1 }}
+      style={{flex: 1}}
     />
   );
 }
@@ -315,9 +319,9 @@ RCT_CUSTOM_VIEW_PROPERTY(region, MKCoordinateRegion, MKMapView)
 
 In the delegate method `-mapView:regionDidChangeAnimated:` the event handler block is called on the corresponding view with the region data. Calling the `onRegionChange` event handler block results in calling the same callback prop in JavaScript. This callback is invoked with the raw event, which we typically process in the wrapper component to simplify the API:
 
-```jsx title='MapView.js'
+```tsx title="MapView.tsx"
 class MapView extends React.Component {
-  _onRegionChange = (event) => {
+  _onRegionChange = event => {
     if (!this.props.onRegionChange) {
       return;
     }
@@ -343,7 +347,7 @@ MapView.propTypes = {
 };
 ```
 
-```jsx title='MyApp.js'
+```tsx title="MyApp.tsx"
 class MyApp extends React.Component {
   onRegionChange(event) {
     // Do stuff with event.region.latitude, etc.
@@ -354,7 +358,7 @@ class MyApp extends React.Component {
       latitude: 37.48,
       longitude: -122.16,
       latitudeDelta: 0.1,
-      longitudeDelta: 0.1
+      longitudeDelta: 0.1,
     };
     return (
       <MapView
@@ -371,7 +375,7 @@ class MyApp extends React.Component {
 
 A React Native view can have more than one child view in the view tree eg.
 
-```jsx
+```tsx
 <View>
   <MyNativeView />
   <MyNativeView />
@@ -383,7 +387,7 @@ In this example, the class `MyNativeView` is a wrapper for a `NativeComponent` a
 
 When the user interacts with the component, like clicking the button, the `backgroundColor` of `MyNativeView` changes. In this case `UIManager` would not know which `MyNativeView` should be handled and which one should change `backgroundColor`. Below you will find a solution to this problem:
 
-```jsx
+```tsx
 <View>
   <MyNativeView ref={this.myNativeReference} />
   <MyNativeView ref={this.myNativeReference2} />
@@ -397,14 +401,14 @@ When the user interacts with the component, like clicking the button, the `backg
 
 Now the above component has a reference to a particular `MyNativeView` which allows us to use a specific instance of `MyNativeView`. Now the button can control which `MyNativeView` should change its `backgroundColor`. In this example let's assume that `callNativeMethod` changes `backgroundColor`.
 
-```jsx title='MyNativeView.ios.js'
+```tsx title="MyNativeView.ios.tsx"
 class MyNativeView extends React.Component {
   callNativeMethod = () => {
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       UIManager.getViewManagerConfig('RNCMyNativeView').Commands
         .callNativeMethod,
-      []
+      [],
     );
   };
 
@@ -444,8 +448,8 @@ Here the `callNativeMethod` is defined in the `RNCMyNativeViewManager.m` file an
 
 Since all our native react views are subclasses of `UIView`, most style attributes will work like you would expect out of the box. Some components will want a default style, however, for example `UIDatePicker` which is a fixed size. This default style is important for the layout algorithm to work as expected, but we also want to be able to override the default style when using the component. `DatePickerIOS` does this by wrapping the native component in an extra view, which has flexible styling, and using a fixed style (which is generated with constants passed in from native) on the inner native component:
 
-```jsx title='DatePickerIOS.ios.js'
-import { UIManager } from 'react-native';
+```tsx title="DatePickerIOS.ios.tsx"
+import {UIManager} from 'react-native';
 var RCTDatePickerIOSConsts = UIManager.RCTDatePicker.Constants;
 ...
   render: function() {
@@ -489,4 +493,4 @@ The `RCTDatePickerIOSConsts` constants are exported from native by grabbing the 
 }
 ```
 
-This guide covered many of the aspects of bridging over custom native components, but there is even more you might need to consider, such as custom hooks for inserting and laying out subviews. If you want to go even deeper, check out the [source code](https://github.com/facebook/react-native/blob/master/React/Views) of some of the implemented components.
+This guide covered many of the aspects of bridging over custom native components, but there is even more you might need to consider, such as custom hooks for inserting and laying out subviews. If you want to go even deeper, check out the [source code](https://github.com/facebook/react-native/tree/main/packages/react-native/React/Views) of some of the implemented components.

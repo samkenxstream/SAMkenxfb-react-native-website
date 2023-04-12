@@ -21,7 +21,7 @@ If you want to dig deeper, we encourage you to check out [React’s official doc
 
 The rest of this introduction to React uses cats in its examples: friendly, approachable creatures that need names and a cafe to work in. Here is your very first Cat component:
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 ```SnackPlayer name=Your%20Cat
@@ -41,7 +41,7 @@ Here is how you do it: To define your `Cat` component, first use JavaScript’s 
 
 ```jsx
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 ```
 
 Your component starts as a function:
@@ -93,7 +93,7 @@ export default Cat;
 You additionally import `Component` from React:
 
 ```jsx
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 ```
 
 Your component starts as a class extending `Component` instead of as a function:
@@ -205,7 +205,7 @@ export default Cat;
 
 #### Developer notes
 
-<Tabs groupId="guide" defaultValue="web" values={constants.getDevNotesTabs(["android", "web"])}>
+<Tabs groupId="guide" queryString defaultValue="web" values={constants.getDevNotesTabs(["android", "web"])}>
 
 <TabItem value="web">
 
@@ -315,7 +315,7 @@ While you can think of props as arguments you use to configure how components re
 
 The following example takes place in a cat cafe where two hungry cats are waiting to be fed. Their hunger, which we expect to change over time (unlike their names), is stored as state. To feed the cats, press their buttons—which will update their state.
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 You can add state to a component by calling [React’s `useState` Hook](https://reactjs.org/docs/hooks-state.html). A Hook is a kind of function that lets you “hook into” React features. For example, `useState` is a Hook that lets you add state to function components. You can learn more about [other kinds of Hooks in the React documentation.](https://reactjs.org/docs/hooks-intro.html)
@@ -358,13 +358,13 @@ export default Cafe;
 First, you will want to import `useState` from React like so:
 
 ```jsx
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 ```
 
 Then you declare the component’s state by calling `useState` inside its function. In this example, `useState` creates an `isHungry` state variable:
 
 ```jsx
-const Cat = (props) => {
+const Cat = props => {
   const [isHungry, setIsHungry] = useState(true);
   // ...
 };
@@ -465,14 +465,14 @@ export default  Cafe;
 As always with class components, you must import the `Component` class from React:
 
 ```jsx
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 ```
 
 In class components, state is stored in a state object:
 
 ```jsx
 export class Cat extends Component {
-  state = { isHungry: true };
+  state = {isHungry: true};
   //..
 }
 ```

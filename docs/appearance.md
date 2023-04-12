@@ -5,15 +5,15 @@ title: Appearance
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
 
-```jsx
-import { Appearance } from 'react-native';
+```tsx
+import {Appearance} from 'react-native';
 ```
 
 The `Appearance` module exposes information about the user's appearance preferences, such as their preferred color scheme (light or dark).
 
 #### Developer notes
 
-<Tabs groupId="guide" defaultValue="web" values={constants.getDevNotesTabs(["android", "ios", "web"])}>
+<Tabs groupId="guide" queryString defaultValue="web" values={constants.getDevNotesTabs(["android", "ios", "web"])}>
 
 <TabItem value="web">
 
@@ -36,7 +36,7 @@ The `Appearance` module exposes information about the user's appearance preferen
 
 You can use the `Appearance` module to determine if the user prefers a dark color scheme:
 
-```jsx
+```tsx
 const colorScheme = Appearance.getColorScheme();
 if (colorScheme === 'dark') {
   // Use dark color scheme
@@ -53,11 +53,11 @@ Although the color scheme is available immediately, this may change (e.g. schedu
 
 ### `getColorScheme()`
 
-```jsx
-static getColorScheme()
+```tsx
+static getColorScheme(): 'light' | 'dark' | null;
 ```
 
-Indicates the current user preferred color scheme. The value may be updated later, either through direct user action (e.g. theme selection in device settings) or on a schedule (e.g. light and dark themes that follow the day/night cycle).
+Indicates the current user preferred color scheme. The value may be updated later, either through direct user action (e.g. theme selection in device settings or application-level selected user interface style via `setColorScheme`) or on a schedule (e.g. light and dark themes that follow the day/night cycle).
 
 Supported color schemes:
 
@@ -71,20 +71,30 @@ See also: `useColorScheme` hook.
 
 ---
 
-### `addChangeListener()`
+### `setColorScheme()`
 
-```jsx
-static addChangeListener(listener)
+```tsx
+static setColorScheme('light' | 'dark' | null): void;
 ```
 
-Add an event handler that is fired when appearance preferences change.
+Force the application to always adopt a light or dark interface style. The default value is `null` which causes the application to inherit the system's interface style. If you assign a different value, the new style applies to the application and all native elements within the application (Alerts, Pickers etc).
+
+Supported color schemes:
+
+- `light`: Apply light user interface style.
+- `dark`: Apply dark user interface style.
+- null: Follow the system's interface style.
+
+> Note: The change will not affect the system's selected interface style or any style set in other applications.
 
 ---
 
-### `removeChangeListener()`
+### `addChangeListener()`
 
-```jsx
-static removeChangeListener(listener)
+```tsx
+static addChangeListener(
+  listener: (preferences: {colorScheme: 'light' | 'dark' | null}) => void,
+): NativeEventSubscription;
 ```
 
-> **Deprecated.** Use the `remove()` method on the event subscription returned by [`addChangeListener()`](#addchangelistener).
+Add an event handler that is fired when appearance preferences change.

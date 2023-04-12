@@ -3,34 +3,25 @@ id: datepickerios
 title: '🚧 DatePickerIOS'
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
-
 > **Deprecated.** Use one of the [community packages](https://reactnative.directory/?search=datepicker) instead.
 
 Use `DatePickerIOS` to render a date/time picker (selector) on iOS. This is a controlled component, so you must hook in to the `onDateChange` callback and update the `date` prop in order for the component to update, otherwise the user's change will be reverted immediately to reflect `props.date` as the source of truth.
 
 ### Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
-
 ```SnackPlayer name=DatePickerIOS&supportedPlatforms=ios
 import React, {useState} from 'react';
 import {DatePickerIOS, View, StyleSheet} from 'react-native';
 
 const App = () => {
-
   const [chosenDate, setChosenDate] = useState(new Date());
 
   return (
     <View style={styles.container}>
-      <DatePickerIOS
-        date={chosenDate}
-        onDateChange={setChosenDate}
-      />
+      <DatePickerIOS date={chosenDate} onDateChange={setChosenDate} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -41,48 +32,6 @@ const styles = StyleSheet.create({
 
 export default App;
 ```
-
-</TabItem>
-<TabItem value="classical">
-
-```SnackPlayer name=DatePickerIOS&supportedPlatforms=ios
-import React, {Component} from 'react';
-import {DatePickerIOS, View, StyleSheet} from 'react-native';
-
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {chosenDate: new Date()};
-
-    this.setDate = this.setDate.bind(this);
-  }
-
-  setDate(newDate) {
-    this.setState({chosenDate: newDate});
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <DatePickerIOS
-          date={this.state.chosenDate}
-          onDateChange={this.setDate}
-        />
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
-```
-
-</TabItem>
-</Tabs>
 
 ---
 

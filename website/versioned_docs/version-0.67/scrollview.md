@@ -74,7 +74,7 @@ Inherits [View Props](view#props).
 
 ### `StickyHeaderComponent`
 
-A React Component that will be used to render sticky headers, should be used together with `stickyHeaderIndices`. You may need to set this component if your sticky header uses custom transforms, for example, when you want your list to have an animated and hidable header. If component have not been provided, the default [`ScrollViewStickyHeader`](https://github.com/facebook/react-native/blob/master/Libraries/Components/ScrollView/ScrollViewStickyHeader.js) component will be used.
+A React Component that will be used to render sticky headers, should be used together with `stickyHeaderIndices`. You may need to set this component if your sticky header uses custom transforms, for example, when you want your list to have an animated and hidable header. If component have not been provided, the default [`ScrollViewStickyHeader`](https://github.com/facebook/react-native/blob/0.67-stable/Libraries/Components/ScrollView/ScrollViewStickyHeader.js) component will be used.
 
 | Type               |
 | ------------------ |
@@ -752,7 +752,7 @@ Scrolls to a given x, y offset, either immediately, with a smooth animation.
 ### `scrollToEnd()`
 
 ```jsx
-scrollToEnd(([options]: { animated: boolean }));
+scrollToEnd(([options]: {animated: boolean}));
 ```
 
 If this is a vertical ScrollView scrolls to the bottom. If this is a horizontal ScrollView scrolls to the right.

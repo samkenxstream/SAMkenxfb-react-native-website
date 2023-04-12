@@ -65,11 +65,11 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)name location:(NSString *)location)
 Now, from your JavaScript file you can call the method like this (after making sure to rebuild):
 
 ```jsx
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 var CalendarManager = NativeModules.CalendarManager;
 CalendarManager.addEvent(
   'Birthday Party',
-  '4 Privet Drive, Surrey'
+  '4 Privet Drive, Surrey',
 );
 ```
 
@@ -90,7 +90,7 @@ The CalendarManager module is instantiated on the Objective-C side using a [Cale
 - object (`NSDictionary`) with string keys and values of any type from this list
 - function (`RCTResponseSenderBlock`)
 
-But it also works with any type that is supported by the `RCTConvert` class (see [`RCTConvert`](https://github.com/facebook/react-native/blob/master/React/Base/RCTConvert.h) for details). The `RCTConvert` helper functions all accept a JSON value as input and map it to a native Objective-C type or class.
+But it also works with any type that is supported by the `RCTConvert` class (see [`RCTConvert`](https://github.com/facebook/react-native/blob/0.61-stable/React/Base/RCTConvert.h) for details). The `RCTConvert` helper functions all accept a JSON value as input and map it to a native Objective-C type or class.
 
 In our `CalendarManager` example, we need to pass the event date to the native method. We can't send JavaScript Date objects over the bridge, so we need to convert the date to a string or number. We could write our native function like this:
 
@@ -125,7 +125,7 @@ You would then call this from JavaScript by using either:
 CalendarManager.addEvent(
   'Birthday Party',
   '4 Privet Drive, Surrey',
-  date.getTime()
+  date.getTime(),
 ); // passing date as number of milliseconds since UNIX epoch
 ```
 
@@ -135,7 +135,7 @@ or
 CalendarManager.addEvent(
   'Birthday Party',
   '4 Privet Drive, Surrey',
-  date.toISOString()
+  date.toISOString(),
 ); // passing date as ISO-8601 string
 ```
 
@@ -160,7 +160,7 @@ and call it from JavaScript:
 CalendarManager.addEvent('Birthday Party', {
   location: '4 Privet Drive, Surrey',
   time: date.getTime(),
-  description: '...'
+  description: '...',
 });
 ```
 
@@ -191,14 +191,14 @@ CalendarManager.findEvents((error, events) => {
   if (error) {
     console.error(error);
   } else {
-    this.setState({ events: events });
+    this.setState({events: events});
   }
 });
 ```
 
-A native module should invoke its callback exactly once. It's okay to store the callback and invoke it later. This pattern is often used to wrap iOS APIs that require delegates - see [`RCTAlertManager`](https://github.com/facebook/react-native/blob/master/React/Modules/RCTAlertManager.m) for an example. If the callback is never invoked, some memory is leaked. If both `onSuccess` and `onFail` callbacks are passed, you should only invoke one of them.
+A native module should invoke its callback exactly once. It's okay to store the callback and invoke it later. This pattern is often used to wrap iOS APIs that require delegates - see [`RCTAlertManager`](https://github.com/facebook/react-native/blob/0.61-stable/React/Modules/RCTAlertManager.m) for an example. If the callback is never invoked, some memory is leaked. If both `onSuccess` and `onFail` callbacks are passed, you should only invoke one of them.
 
-If you want to pass error-like objects to JavaScript, use `RCTMakeError` from [`RCTUtils.h`](https://github.com/facebook/react-native/blob/master/React/Base/RCTUtils.h). Right now this only passes an Error-shaped dictionary to JavaScript, but we would like to automatically generate real JavaScript `Error` objects in the future.
+If you want to pass error-like objects to JavaScript, use `RCTMakeError` from [`RCTUtils.h`](https://github.com/facebook/react-native/blob/0.61-stable/React/Base/RCTUtils.h). Right now this only passes an Error-shaped dictionary to JavaScript, but we would like to automatically generate real JavaScript `Error` objects in the future.
 
 ## Promises
 
@@ -228,7 +228,7 @@ async function updateEvents() {
   try {
     var events = await CalendarManager.findEvents();
 
-    this.setState({ events });
+    this.setState({events});
   } catch (e) {
     console.error(e);
   }
@@ -513,6 +513,6 @@ For those of you new to Swift and Objective-C, whenever you [mix the two languag
 #import <React/RCTBridgeModule.h>
 ```
 
-You can also use `RCT_EXTERN_REMAP_MODULE` and `_RCT_EXTERN_REMAP_METHOD` to alter the JavaScript name of the module or methods you are exporting. For more information see [`RCTBridgeModule`](https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h).
+You can also use `RCT_EXTERN_REMAP_MODULE` and `_RCT_EXTERN_REMAP_METHOD` to alter the JavaScript name of the module or methods you are exporting. For more information see [`RCTBridgeModule`](https://github.com/facebook/react-native/blob/0.61-stable/React/Base/RCTBridgeModule.h).
 
 > **Important when making third party modules**: Static libraries with Swift are only supported in Xcode 9 and later. In order for the Xcode project to build when you use Swift in the iOS static library you include in the module, your main app project must contain Swift code and a bridging header itself. If your app project does not contain any Swift code, a workaround can be a single empty .swift file and an empty bridging header.

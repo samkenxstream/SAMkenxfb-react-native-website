@@ -3,8 +3,6 @@ id: sectionlist
 title: SectionList
 ---
 
-import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
-
 A performant interface for rendering sectioned lists, supporting the most handy features:
 
 - Fully cross-platform.
@@ -22,45 +20,47 @@ If you don't need section support and want a simpler interface, use [`<FlatList>
 
 ## Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
-
 ```SnackPlayer name=SectionList%20Example
-import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar } from "react-native";
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  SectionList,
+  StatusBar,
+} from 'react-native';
 
 const DATA = [
   {
-    title: "Main dishes",
-    data: ["Pizza", "Burger", "Risotto"]
+    title: 'Main dishes',
+    data: ['Pizza', 'Burger', 'Risotto'],
   },
   {
-    title: "Sides",
-    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
   },
   {
-    title: "Drinks",
-    data: ["Water", "Coke", "Beer"]
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
   },
   {
-    title: "Desserts",
-    data: ["Cheese Cake", "Ice Cream"]
-  }
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
 ];
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
 
 const App = () => (
   <SafeAreaView style={styles.container}>
     <SectionList
       sections={DATA}
       keyExtractor={(item, index) => item + index}
-      renderItem={({ item }) => <Item title={item} />}
-      renderSectionHeader={({ section: { title } }) => (
+      renderItem={({item}) => (
+        <View style={styles.item}>
+          <Text style={styles.title}>{item}</Text>
+        </View>
+      )}
+      renderSectionHeader={({section: {title}}) => (
         <Text style={styles.header}>{title}</Text>
       )}
     />
@@ -71,99 +71,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   item: {
-    backgroundColor: "#f9c2ff",
+    backgroundColor: '#f9c2ff',
     padding: 20,
-    marginVertical: 8
+    marginVertical: 8,
   },
   header: {
     fontSize: 32,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   title: {
-    fontSize: 24
-  }
+    fontSize: 24,
+  },
 });
 
 export default App;
 ```
-
-</TabItem>
-<TabItem value="classical">
-
-```SnackPlayer name=SectionList%20Example
-import React, { Component } from "react";
-import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar } from "react-native";
-
-const DATA = [
-  {
-    title: "Main dishes",
-    data: ["Pizza", "Burger", "Risotto"]
-  },
-  {
-    title: "Sides",
-    data: ["French Fries", "Onion Rings", "Fried Shrimps"]
-  },
-  {
-    title: "Drinks",
-    data: ["Water", "Coke", "Beer"]
-  },
-  {
-    title: "Desserts",
-    data: ["Cheese Cake", "Ice Cream"]
-  }
-];
-
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
-class App extends Component {
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <Item title={item} />}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.header}>{title}</Text>
-          )}
-        />
-      </SafeAreaView>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16
-  },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8
-  },
-  header: {
-    fontSize: 32,
-    backgroundColor: "#fff"
-  },
-  title: {
-    fontSize: 24
-  }
-});
-
-export default App;
-```
-
-</TabItem>
-</Tabs>
 
 This is a convenience wrapper around [`<VirtualizedList>`](virtualizedlist.md), and thus inherits its props (as well as those of [`<ScrollView>`](scrollview.md)) that aren't explicitly listed here, along with the following caveats:
 
@@ -248,11 +173,11 @@ Reverses the direction of scroll. Uses scale transforms of -1.
 
 ### `ItemSeparatorComponent`
 
-Rendered in between each item, but not at the top or bottom. By default, `highlighted`, `section`, and `[leading/trailing][Item/Section]` props are provided. `renderItem` provides `separators.highlight`/`unhighlight` which will update the `highlighted` prop, but you can also add custom props with `separators.updateProps`.
+Rendered in between each item, but not at the top or bottom. By default, `highlighted`, `section`, and `[leading/trailing][Item/Section]` props are provided. `renderItem` provides `separators.highlight`/`unhighlight` which will update the `highlighted` prop, but you can also add custom props with `separators.updateProps`. Can be a React Component (e.g. `SomeComponent`), or a React element (e.g. `<SomeComponent />`).
 
-| Type               |
-| ------------------ |
-| component, element |
+| Type                         |
+| ---------------------------- |
+| component, function, element |
 
 ---
 
@@ -300,9 +225,9 @@ Rendered at the very beginning of the list. Can be a React Component (e.g. `Some
 
 Called once when the scroll position gets within `onEndReachedThreshold` of the rendered content.
 
-| Type                                        |
-| ------------------------------------------- |
-| (info: { distanceFromEnd: number }) => void |
+| Type                                      |
+| ----------------------------------------- |
+| (info: {distanceFromEnd: number}) => void |
 
 ---
 
@@ -330,9 +255,9 @@ If provided, a standard RefreshControl will be added for "Pull to Refresh" funct
 
 Called when the viewability of rows changes, as defined by the `viewabilityConfig` prop.
 
-| Type                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------ |
-| (callback: { changed: array of [ViewToken](viewtoken)s, viewableItems: array of [ViewToken](viewtoken)s }) => void |
+| Type                                                                                                             |
+| ---------------------------------------------------------------------------------------------------------------- |
+| (callback: {changed: array of [ViewToken](viewtoken)s, viewableItems: array of [ViewToken](viewtoken)s}) => void |
 
 ---
 
@@ -362,9 +287,9 @@ This may improve scroll performance for large lists.
 
 Rendered at the bottom of each section.
 
-| Type                                                                   |
-| ---------------------------------------------------------------------- |
-| (info: { section: [Section](sectionlist#section) }) => element, `null` |
+| Type                                                                 |
+| -------------------------------------------------------------------- |
+| (info: {section: [Section](sectionlist#section)}) => element, `null` |
 
 ---
 
@@ -372,9 +297,9 @@ Rendered at the bottom of each section.
 
 Rendered at the top of each section. These stick to the top of the `ScrollView` by default on iOS. See `stickySectionHeadersEnabled`.
 
-| Type                                                                   |
-| ---------------------------------------------------------------------- |
-| (info: { section: [Section](sectionlist#section) }) => element, `null` |
+| Type                                                                 |
+| -------------------------------------------------------------------- |
+| (info: {section: [Section](sectionlist#section)}) => element, `null` |
 
 ---
 
@@ -400,7 +325,7 @@ Makes section headers stick to the top of the screen until the next one pushes i
 
 ### `flashScrollIndicators()` <div class="label ios">iOS</div>
 
-```jsx
+```tsx
 flashScrollIndicators();
 ```
 
@@ -410,7 +335,7 @@ Displays the scroll indicators momentarily.
 
 ### `recordInteraction()`
 
-```jsx
+```tsx
 recordInteraction();
 ```
 
@@ -420,8 +345,8 @@ Tells the list an interaction has occurred, which should trigger viewability cal
 
 ### `scrollToLocation()`
 
-```jsx
-scrollToLocation(params);
+```tsx
+scrollToLocation(params: SectionListScrollParams);
 ```
 
 Scrolls to the item at the specified `sectionIndex` and `itemIndex` (within the section) positioned in the viewable area such that `viewPosition` 0 places it at the top (and may be covered by a sticky header), 1 at the bottom, and 0.5 centered in the middle.

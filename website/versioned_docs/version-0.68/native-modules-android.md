@@ -28,7 +28,7 @@ We also recommend enabling [Gradle Daemon](https://docs.gradle.org/2.9/userguide
 
 ### Create A Custom Native Module File
 
-The first step is to create the (`CalendarModule.java` or `CalendarModule.kt`) Java/Kotlin file inside `android/app/src/main/java/com/your-app-name/` folder (the folder is the same for both for either Kotlin of Java). This Java/Kotlin file will contain your native module Java/Kotlin class.
+The first step is to create the (`CalendarModule.java` or `CalendarModule.kt`) Java/Kotlin file inside `android/app/src/main/java/com/your-app-name/` folder (the folder is the same for both Kotlin and Java). This Java/Kotlin file will contain your native module Java/Kotlin class.
 
 <figure>
   <img src="/docs/assets/native-modules-android-add-class.png" width="700" alt="Image of adding a class called CalendarModule.java within the Android Studio." />
@@ -37,11 +37,11 @@ The first step is to create the (`CalendarModule.java` or `CalendarModule.kt`) J
 
 Then add the following content:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
-package com.your-app-name; // replace com.your-app-name with your app’s name
+package com.your-apps-package-name; // replace your-apps-package-name with your app’s package name
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -61,7 +61,7 @@ public class CalendarModule extends ReactContextBaseJavaModule {
 <TabItem value="kotlin">
 
 ```kotlin
-package com.your-app-name // replace com.your-app-name with your app’s name
+package com.your-apps-package-name; // replace your-apps-package-name with your app’s package name
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContext
@@ -84,7 +84,7 @@ As you can see, your `CalendarModule` class extends the `ReactContextBaseJavaMod
 
 All Java/Kotlin native modules in Android need to implement the `getName()` method. This method returns a string, which represents the name of the native module. The native module can then be accessed in JavaScript using its name. For example, in the below code snippet, `getName()` returns `"CalendarModule"`.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -109,7 +109,7 @@ override fun getName() = "CalendarModule"
 The native module can then be accessed in JS like this:
 
 ```jsx
-const { CalendarModule } = ReactNative.NativeModules;
+const {CalendarModule} = ReactNative.NativeModules;
 ```
 
 ### Export a Native Method to JavaScript
@@ -118,7 +118,7 @@ Next you will need to add a method to your native module that will create calend
 
 Set up a method `createCalendarEvent()` for `CalendarModule` that can be invoked in JS through `CalendarModule.createCalendarEvent()`. For now, the method will take in a name and location as strings. Argument type options will be covered shortly.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -139,7 +139,7 @@ public void createCalendarEvent(String name, String location) {
 
 Add a debug log in the method to confirm it has been invoked when you call it from your application. Below is an example of how you can import and use the [Log](https://developer.android.com/reference/android/util/Log) class from the Android util package:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -173,7 +173,7 @@ Once you finish implementing the native module and hook it up in JavaScript, you
 
 You can pass `isBlockingSynchronousMethod = true` to a native method to mark it as a synchronous method.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -202,7 +202,7 @@ To add your Native Module to `ReactPackage`, first create a new Java/Kotlin Clas
 
 Then add the following content:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -266,13 +266,13 @@ class MyAppPackage : ReactPackage {
 
 This file imports the native module you created, `CalendarModule`. It then instantiates `CalendarModule` within the `createNativeModules()` function and returns it as a list of `NativeModules` to register. If you add more native modules down the line, you can also instantiate them and add them to the list returned here.
 
-> It is worth noting that this way of registering native modules eagerly initializes all native modules when the application starts, which adds to the startup time of an application. You can use [TurboReactPackage](https://github.com/facebook/react-native/blob/master/ReactAndroid/src/main/java/com/facebook/react/TurboReactPackage.java) as an alternative. Instead of `createNativeModules`, which return a list of instantiated native module objects, TurboReactPackage implements a `getModule(String name, ReactApplicationContext rac)` method that creates the native module object, when required. TurboReactPackage is a bit more complicated to implement at the moment. In addition to implementing a `getModule()` method, you have to implement a `getReactModuleInfoProvider()` method, which returns a list of all the native modules the package can instantiate along with a function that instantiates them, example [here](https://github.com/facebook/react-native/blob/8ac467c51b94c82d81930b4802b2978c85539925/ReactAndroid/src/main/java/com/facebook/react/CoreModulesPackage.java#L86-L165). Again, using TurboReactPackage will allow your application to have a faster startup time, but it is currently a bit cumbersome to write. So proceed with caution if you choose to use TurboReactPackages.
+> It is worth noting that this way of registering native modules eagerly initializes all native modules when the application starts, which adds to the startup time of an application. You can use [TurboReactPackage](https://github.com/facebook/react-native/blob/0.68-stable/ReactAndroid/src/main/java/com/facebook/react/TurboReactPackage.java) as an alternative. Instead of `createNativeModules`, which return a list of instantiated native module objects, TurboReactPackage implements a `getModule(String name, ReactApplicationContext rac)` method that creates the native module object, when required. TurboReactPackage is a bit more complicated to implement at the moment. In addition to implementing a `getModule()` method, you have to implement a `getReactModuleInfoProvider()` method, which returns a list of all the native modules the package can instantiate along with a function that instantiates them, example [here](https://github.com/facebook/react-native/blob/8ac467c51b94c82d81930b4802b2978c85539925/ReactAndroid/src/main/java/com/facebook/react/CoreModulesPackage.java#L86-L165). Again, using TurboReactPackage will allow your application to have a faster startup time, but it is currently a bit cumbersome to write. So proceed with caution if you choose to use TurboReactPackages.
 
 To register the `CalendarModule` package, you must add `MyAppPackage` to the list of packages returned in ReactNativeHost's `getPackages()` method. Open up your `MainApplication.java` or `MainApplication.kt` file, which can be found in the following path: `android/app/src/main/java/com/your-app-name/`.
 
 Locate ReactNativeHost’s `getPackages()` method and add your package to the packages list `getPackages()` returns:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -311,7 +311,7 @@ Find a place in your application where you would like to add a call to the nativ
 
 ```jsx
 import React from 'react';
-import { NativeModules, Button } from 'react-native';
+import {NativeModules, Button} from 'react-native';
 
 const NewModuleButton = () => {
   const onPress = () => {
@@ -333,13 +333,13 @@ export default NewModuleButton;
 In order to access your native module from JavaScript you need to first import `NativeModules` from React Native:
 
 ```jsx
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 ```
 
 You can then access the `CalendarModule` native module off of `NativeModules`.
 
 ```jsx
-const { CalendarModule } = NativeModules;
+const {CalendarModule} = NativeModules;
 ```
 
 Now that you have the CalendarModule native module available, you can invoke your native method `createCalendarEvent()`. Below it is added to the `onPress()` method in `NewModuleButton`:
@@ -387,8 +387,8 @@ To save consumers of your native module from needing to do that each time they w
 * 1. String name: A string representing the name of the event
 * 2. String location: A string representing the location of the event
 */
-import { NativeModules } from 'react-native';
-const { CalendarModule } = NativeModules;
+import {NativeModules} from 'react-native';
+const {CalendarModule} = NativeModules;
 export default CalendarModule;
 ```
 
@@ -443,7 +443,7 @@ When a native module method is invoked in JavaScript, React Native converts the 
 
 For argument types not listed above, you will need to handle the conversion yourself. For example, in Android, `Date` conversion is not supported out of the box. You can handle the conversion to the `Date` type within the native method yourself like so:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -477,7 +477,7 @@ For argument types not listed above, you will need to handle the conversion your
 
 A native module can export constants by implementing the native method `getConstants()`, which is available in JS. Below you will implement `getConstants()` and return a Map that contains a `DEFAULT_EVENT_NAME` constant you can access in JavaScript:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -503,7 +503,7 @@ override fun getConstants(): MutableMap<String, Any> =
 The constant can then be accessed by invoking `getConstants` on the native module in JS:
 
 ```jsx
-const { DEFAULT_EVENT_NAME } = CalendarModule.getConstants();
+const {DEFAULT_EVENT_NAME} = CalendarModule.getConstants();
 console.log(DEFAULT_EVENT_NAME);
 ```
 
@@ -517,7 +517,7 @@ Native modules also support a unique kind of argument: a callback. Callbacks are
 
 In order to create a native module method with a callback, first import the `Callback` interface, and then add a new parameter to your native module method of type `Callback`. There are a couple of nuances with callback arguments that will soon be lifted with TurboModules. First off, you can only have two callbacks in your function arguments- a successCallback and a failureCallback. In addition, the last argument to a native module method call, if it's a function, is treated as the successCallback, and the second to last argument to a native module method call, if it's a function, is treated as the failure callback.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -542,7 +542,7 @@ import com.facebook.react.bridge.Callback
 
 You can invoke the callback in your Java/Kotlin method, providing whatever data you want to pass to JavaScript. Please note that you can only pass serializable data from native code to JavaScript. If you need to pass back a native object you can use `WriteableMaps`, if you need to use a collection use `WritableArrays`. It is also important to highlight that the callback is not invoked immediately after the native function completes. Below the ID of an event created in an earlier call is passed to the callback.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -574,9 +574,9 @@ const onPress = () => {
   CalendarModule.createCalendarEvent(
     'Party',
     'My House',
-    (eventId) => {
+    eventId => {
       console.log(`Created a new event with id ${eventId}`);
-    }
+    },
   );
 };
 ```
@@ -585,7 +585,7 @@ Another important detail to note is that a native module method can only invoke 
 
 There are two approaches to error handling with callbacks. The first is to follow Node’s convention and treat the first argument passed to the callback as an error object.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -622,14 +622,14 @@ const onPress = () => {
         console.error(`Error found! ${error}`);
       }
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
 
 Another option is to use an onSuccess and onFailure callback:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -661,12 +661,12 @@ const onPress = () => {
   CalendarModule.createCalendarEventCallback(
     'testName',
     'testLocation',
-    (error) => {
+    error => {
       console.error(`Error found! ${error}`);
     },
-    (eventId) => {
+    eventId => {
       console.log(`event id ${eventId} returned`);
-    }
+    },
   );
 };
 ```
@@ -677,7 +677,7 @@ Native modules can also fulfill a [Promise](https://developer.mozilla.org/en-US/
 
 Refactoring the above code to use a promise instead of callbacks looks like this:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -721,7 +721,7 @@ const onSubmit = async () => {
   try {
     const eventId = await CalendarModule.createCalendarEvent(
       'Party',
-      'My House'
+      'My House',
     );
     console.log(`Created a new event with id ${eventId}`);
   } catch (e) {
@@ -732,7 +732,7 @@ const onSubmit = async () => {
 
 The reject method takes different combinations of the following arguments:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -749,11 +749,11 @@ code: String, message: String, userInfo: WritableMap, throwable: Throwable
 </TabItem>
 </Tabs>
 
-For more detail, you can find the `Promise.java` interface [here](https://github.com/facebook/react-native/blob/master/ReactAndroid/src/main/java/com/facebook/react/bridge/Promise.java#L1). If `userInfo` is not provided, ReactNative will set it to null. For the rest of the parameters React Native will use a default value. The `message` argument provides the error `message` shown at the top of an error call stack. Below is an example of the error message shown in JavaScript from the following reject call in Java/Kotlin.
+For more detail, you can find the `Promise.java` interface [here](https://github.com/facebook/react-native/blob/0.68-stable/ReactAndroid/src/main/java/com/facebook/react/bridge/Promise.java#L1). If `userInfo` is not provided, ReactNative will set it to null. For the rest of the parameters React Native will use a default value. The `message` argument provides the error `message` shown at the top of an error call stack. Below is an example of the error message shown in JavaScript from the following reject call in Java/Kotlin.
 
 Java/Kotlin reject call:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -781,7 +781,7 @@ Error message in React Native App when promise is rejected:
 
 Native modules can signal events to JavaScript without being invoked directly. For example, you might want to signal to JavaScript a reminder that a calendar event from the native Android calendar app will occur soon. The easiest way to do this is to use the `RCTDeviceEventEmitter` which can be obtained from the `ReactContext` as in the code snippet below.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -797,14 +797,24 @@ private void sendEvent(ReactContext reactContext,
      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
      .emit(eventName, params);
 }
+
+private int listenerCount = 0;
+
 @ReactMethod
 public void addListener(String eventName) {
-  // Set up any upstream listeners or background tasks as necessary
+  if (listenerCount == 0) {
+    // Set up any upstream listeners or background tasks as necessary
+  }
+
+  listenerCount += 1;
 }
 
 @ReactMethod
 public void removeListeners(Integer count) {
-  // Remove upstream listeners, stop unnecessary background tasks
+  listenerCount -= count;
+  if (listenerCount == 0) {
+    // Remove upstream listeners, stop unnecessary background tasks
+  }
 }
 ...
 WritableMap params = Arguments.createMap();
@@ -829,14 +839,23 @@ private fun sendEvent(reactContext: ReactContext, eventName: String, params: Wri
       .emit(eventName, params)
 }
 
+private var listenerCount = 0
+
 @ReactMethod
 fun addListener(eventName: String) {
+  if (listenerCount == 0) {
     // Set up any upstream listeners or background tasks as necessary
+  }
+
+  listenerCount += 1
 }
 
 @ReactMethod
 fun removeListeners(count: Int) {
+  listenerCount -= count
+  if (listenerCount == 0) {
     // Remove upstream listeners, stop unnecessary background tasks
+  }
 }
 ...
 val params = Arguments.createMap().apply {
@@ -849,7 +868,7 @@ sendEvent(reactContext, "EventReminder", params)
 </TabItem>
 </Tabs>
 
-JavaScript modules can then register to receive events by `addListener` on the [NativeEventEmitter](https://github.com/facebook/react-native/blob/master/Libraries/EventEmitter/NativeEventEmitter.js) class.
+JavaScript modules can then register to receive events by `addListener` on the [NativeEventEmitter](https://github.com/facebook/react-native/blob/0.68-stable/Libraries/EventEmitter/NativeEventEmitter.js) class.
 
 ```jsx
 import { NativeEventEmitter, NativeModules } from 'react-native';
@@ -873,7 +892,7 @@ import { NativeEventEmitter, NativeModules } from 'react-native';
 
 You'll need to listen to `onActivityResult` if you want to get results from an activity you started with `startActivityForResult`. To do this, you must extend `BaseActivityEventListener` or implement `ActivityEventListener`. The former is preferred as it is more resilient to API changes. Then, you need to register the listener in the module's constructor like so:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -892,7 +911,7 @@ reactContext.addActivityEventListener(mActivityResultListener);
 
 Now you can listen to `onActivityResult` by implementing the following method:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -925,7 +944,7 @@ override fun onActivityResult(
 
 Let's implement a basic image picker to demonstrate this. The image picker will expose the method `pickImage` to JavaScript, which will return the path of the image when called.
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```jsx
@@ -1085,7 +1104,7 @@ class ImagePickerModule(reactContext: ReactApplicationContext) :
 
 Listening to the activity's LifeCycle events such as `onResume`, `onPause` etc. is very similar to how `ActivityEventListener` was implemented. The module must implement `LifecycleEventListener`. Then, you need to register a listener in the module's constructor like so:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java
@@ -1104,7 +1123,7 @@ reactContext.addLifecycleEventListener(this)
 
 Now you can listen to the activity's LifeCycle events by implementing the following methods:
 
-<Tabs groupId="android-language" defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
+<Tabs groupId="android-language" queryString defaultValue={constants.defaultAndroidLanguage} values={constants.androidLanguages}>
 <TabItem value="java">
 
 ```java

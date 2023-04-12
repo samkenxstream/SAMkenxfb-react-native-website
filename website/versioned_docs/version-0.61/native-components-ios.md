@@ -92,7 +92,7 @@ Now to actually disable zooming, we set the property in JS:
 
 ```jsx
 // MyApp.js
-<MapView zoomEnabled={false} style={{ flex: 1 }} />
+<MapView zoomEnabled={false} style={{flex: 1}} />
 ```
 
 To document the properties (and which values they accept) of our MapView component we'll add a wrapper component and document the interface with React `PropTypes`:
@@ -101,7 +101,7 @@ To document the properties (and which values they accept) of our MapView compone
 // MapView.js
 import PropTypes from 'prop-types';
 import React from 'react';
-import { requireNativeComponent } from 'react-native';
+import {requireNativeComponent} from 'react-native';
 
 class MapView extends React.Component {
   render() {
@@ -114,7 +114,7 @@ MapView.propTypes = {
    * A Boolean value that determines whether the user may use pinch
    * gestures to zoom in and out of the map.
    */
-  zoomEnabled: PropTypes.bool
+  zoomEnabled: PropTypes.bool,
 };
 
 var RNTMap = requireNativeComponent('RNTMap');
@@ -413,7 +413,7 @@ class MyNativeView extends React.Component {
       ReactNative.findNodeHandle(this),
       UIManager.getViewManagerConfig('RNCMyNativeView').Commands
         .callNativeMethod,
-      []
+      [],
     );
   };
 
@@ -504,4 +504,4 @@ The `RCTDatePickerIOSConsts` constants are exported from native by grabbing the 
 }
 ```
 
-This guide covered many of the aspects of bridging over custom native components, but there is even more you might need to consider, such as custom hooks for inserting and laying out subviews. If you want to go even deeper, check out the [source code](https://github.com/facebook/react-native/blob/master/React/Views) of some of the implemented components.
+This guide covered many of the aspects of bridging over custom native components, but there is even more you might need to consider, such as custom hooks for inserting and laying out subviews. If you want to go even deeper, check out the [source code](https://github.com/facebook/react-native/blob/0.61-stable/React/Views) of some of the implemented components.

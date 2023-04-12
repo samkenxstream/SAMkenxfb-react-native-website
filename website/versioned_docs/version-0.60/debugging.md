@@ -49,7 +49,7 @@ As with a RedBox, you can use `console.warn()` to trigger a YellowBox.
 YellowBoxes can be disabled during development by using `console.disableYellowBox = true;`. Specific warnings can be ignored programmatically by setting an array of prefixes that should be ignored:
 
 ```jsx
-import { YellowBox } from 'react-native';
+import {YellowBox} from 'react-native';
 YellowBox.ignoreWarnings(['Warning: ...']);
 ```
 
@@ -162,13 +162,11 @@ You may also access these through `Debug → Open System Log...` in the iOS Simu
 
 > If you're using Create React Native App or Expo CLI, this is configured for you already.
 
-On iOS devices, open the file [`RCTWebSocketExecutor.m`](https://github.com/facebook/react-native/blob/master/Libraries/WebSocket/RCTWebSocketExecutor.m) and change "localhost" to the IP address of your computer, then select "Debug JS Remotely" from the Developer Menu.
+On iOS devices, open the file [`RCTWebSocketExecutor.m`](https://github.com/facebook/react-native/blob/0.60-stable/Libraries/WebSocket/RCTWebSocketExecutor.m) and change "localhost" to the IP address of your computer, then select "Debug JS Remotely" from the Developer Menu.
 
 On Android 5.0+ devices connected via USB, you can use the [`adb` command line tool](http://developer.android.com/tools/help/adb.html) to setup port forwarding from the device to your computer:
 
 `adb reverse tcp:8081 tcp:8081`
-
-<!-- alex ignore host -->
 
 Alternatively, select "Dev Settings" from the Developer Menu, then update the "Debug server host for device" setting to match the IP address of your computer.
 

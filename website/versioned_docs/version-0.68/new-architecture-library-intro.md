@@ -75,11 +75,23 @@ export default (codegenNativeComponent<NativeProps>(
 
 When using Flow, you will be using [type annotations](https://flow.org/en/docs/types/) to define your spec. Keeping in mind that the goal of defining a JavaScript spec is to ensure the generated native interface code is type safe, the set of supported Flow types will be those that can be mapped one-to-one to a corresponding type on the native platform.
 
-<!-- alex ignore savage -->
-
 In general, this means you can use primitive types (strings, numbers, booleans), as well as function types, object types, and array types. Union types, on the other hand, are not supported. All types must be read-only in Flow: either `+` or `$ReadOnly<>` or `{||}` objects.
 
 > See Appendix [I. Flow Type to Native Type Mapping](#i-flow-type-to-native-type-mapping).
+
+### Codegen helper types
+
+You can use predefined types for your JavaScript spec, here is a list of them:
+
+- `Double`
+- `Float`
+- `Int32`
+- `UnsafeObject`
+- `WithDefault<Type, Value>` - Sets default value for type
+- `BubblingEventHandler<T>` - For events that are propagated (bubbled) up the component tree from child to parent up to the root (eg: `onStartShouldSetResponder`).
+- `DirectEventHandler<T>` - For events that are called only on element recieving the event (eg: `onClick`) and don't bubble.
+
+Later on those types are compiled to coresponding equivalents on target platforms.
 
 ### Be Consistent Across Platforms and Eliminate Type Ambiguity
 
@@ -132,11 +144,9 @@ While we know that all deprecations are a hassle, this guide is intended to help
 3. Migrating off `setNativeProps`
 4. Move the call to `requireNativeComponent` to a separate file
 5. Migrating off `dispatchViewManagerCommand`
-6. Using `codegenNativeComponent`
+6. Creating NativeCommands with `codegenNativeCommands`
 
 ### Migrating `findNodeHandle` / getting a `HostComponent`
-
-<!-- alex ignore host -->
 
 Much of the migration work requires a HostComponent ref to access certain APIs that are only attached to host components (like View, Text, or ScrollView). HostComponents are the return value of calls to `requireNativeComponent`. `findNodeHandle` tunnels through multiple levels of component hierarchy to find the nearest native component.
 
@@ -402,10 +412,12 @@ return <RNTMyNativeViewNativeComponent />;
 ```
 
 ```js title="RNTMyNativeViewNativeComponent.js"
-import { requireNativeComponent } from 'react-native';
+import {requireNativeComponent} from 'react-native';
+
 const RNTMyNativeViewNativeComponent = requireNativeComponent(
-  'RNTMyNativeView'
+  'RNTMyNativeView',
 );
+
 export default RNTMyNativeViewNativeComponent;
 ```
 
@@ -414,7 +426,7 @@ export default RNTMyNativeViewNativeComponent;
 If `requireNativeComponent` is not typed, you can temporarily use the `mixed` type to fix the Flow warning, for example:
 
 ```js
-import type { HostComponent } from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
+import type {HostComponent} from 'react-native/Libraries/Renderer/shims/ReactNativeTypes';
 // ...
 const RCTWebViewNativeComponent: HostComponent<mixed> =
   requireNativeComponent < mixed > 'RNTMyNativeView';
@@ -442,7 +454,7 @@ class MyComponent extends React.Component<Props> {
 }
 ```
 
-**Creating the NativeCommands with `codegenNativeCommands`**
+**Creating NativeCommands with `codegenNativeCommands`**
 
 ```ts title="MyCustomMapNativeComponent.js"
 import codegenNativeCommands from 'react-native/Libraries/Utilities/codegenNativeCommands';

@@ -5,13 +5,6 @@ title: Linking
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
 
-<div className="banner-native-code-required">
-  <h3>Projects with Native Code Only</h3>
-  <p>
-    The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="http://docs.expo.io/versions/latest/workflow/linking/">Linking</a> in the Expo documentation for the appropriate alternative.
-  </p>
-</div>
-
 `Linking` gives you a general interface to interact with both incoming and outgoing app links.
 
 Every Link (URL) has a URL Scheme, some websites are prefixed with `https://` or `http://` and the `http` is the URL Scheme. Let's call it scheme for short.
@@ -35,9 +28,16 @@ As mentioned in the introduction, there are some URL schemes for core functional
 
 ### Enabling Deep Links
 
+<div className="banner-native-code-required">
+  <h3>Projects with Native Code Only</h3>
+  <p>
+    The following section only applies to projects with native code exposed. If you are using the managed Expo workflow, see the guide on <a href="https://docs.expo.dev/guides/linking/">Linking</a> in the Expo documentation for the appropriate alternative.
+  </p>
+</div>
+
 If you want to enable deep links in your app, please read the below guide:
 
-<Tabs groupId="syntax" defaultValue={constants.defaultPlatform} values={constants.platforms}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultPlatform} values={constants.platforms}>
 <TabItem value="android">
 
 > For instructions on how to add support for deep linking on Android, refer to [Enabling Deep Links for App Content - Add Intent Filters for Your Deep Links](http://developer.android.com/training/app-indexing/deep-linking.html#adding-filters).
@@ -102,7 +102,7 @@ There are two ways to handle URLs that open your app.
 
 #### 1. If the app is already open, the app is foregrounded and a Linking 'url' event is fired
 
-You can handle these events with `Linking.addEventListener('url', callback)` - it calls `callback({ url })` with the linked URL
+You can handle these events with `Linking.addEventListener('url', callback)` - it calls `callback({url})` with the linked URL
 
 #### 2. If the app is not already open, it is opened and the url is passed in as the initialURL
 
@@ -114,15 +114,18 @@ You can handle these events with `Linking.getInitialURL()` - it returns a Promis
 
 ### Open Links and Deep Links (Universal Links)
 
-```SnackPlayer name=Linking%20Function%20Component%20Example&supportedPlatforms=ios,android
-import React, { useCallback } from "react";
-import { Alert, Button, Linking, StyleSheet, View } from "react-native";
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-const supportedURL = "https://google.com";
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=js
+import React, {useCallback} from 'react';
+import {Alert, Button, Linking, StyleSheet, View} from 'react-native';
 
-const unsupportedURL = "slack://open?team=123456";
+const supportedURL = 'https://google.com';
 
-const OpenURLButton = ({ url, children }) => {
+const unsupportedURL = 'slack://open?team=123456';
+
+const OpenURLButton = ({url, children}) => {
   const handlePress = useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(url);
@@ -149,19 +152,82 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default App;
 ```
 
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=tsx
+import React, {useCallback} from 'react';
+import {Alert, Button, Linking, StyleSheet, View} from 'react-native';
+
+const supportedURL = 'https://google.com';
+
+const unsupportedURL = 'slack://open?team=123456';
+
+type OpenURLButtonProps = {
+  url: string;
+  children: string;
+};
+
+const OpenURLButton = ({url, children}: OpenURLButtonProps) => {
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+  return <Button title={children} onPress={handlePress} />;
+};
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <OpenURLButton url={supportedURL}>Open Supported URL</OpenURLButton>
+      <OpenURLButton url={unsupportedURL}>Open Unsupported URL</OpenURLButton>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```
+
+</TabItem>
+</Tabs>
+
 ### Open Custom Settings
 
-```SnackPlayer name=Linking%20Function%20Component%20Example&supportedPlatforms=ios,android
-import React, { useCallback } from "react";
-import { Button, Linking, StyleSheet, View } from "react-native";
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-const OpenSettingsButton = ({ children }) => {
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=js
+import React, {useCallback} from 'react';
+import {Button, Linking, StyleSheet, View} from 'react-native';
+
+const OpenSettingsButton = ({children}) => {
   const handlePress = useCallback(async () => {
     // Open the custom settings if the app has one
     await Linking.openSettings();
@@ -179,25 +245,72 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default App;
 ```
 
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=tsx
+import React, {useCallback} from 'react';
+import {Button, Linking, StyleSheet, View} from 'react-native';
+
+type OpenSettingsButtonProps = {
+  children: string;
+};
+
+const OpenSettingsButton = ({children}: OpenSettingsButtonProps) => {
+  const handlePress = useCallback(async () => {
+    // Open the custom settings if the app has one
+    await Linking.openSettings();
+  }, []);
+
+  return <Button title={children} onPress={handlePress} />;
+};
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <OpenSettingsButton>Open Settings</OpenSettingsButton>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```
+
+</TabItem>
+</Tabs>
+
 ### Get the Deep Link
 
-```SnackPlayer name=Linking%20Function%20Component%20Example&supportedPlatforms=ios,android
-import React, { useState, useEffect } from "react";
-import { Linking, StyleSheet, Text, View } from "react-native";
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-const useMount = func => useEffect(() => func(), []);
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=js
+import React, {useState, useEffect} from 'react';
+import {Linking, StyleSheet, Text, View} from 'react-native';
 
 const useInitialURL = () => {
   const [url, setUrl] = useState(null);
   const [processing, setProcessing] = useState(true);
 
-  useMount(() => {
+  useEffect(() => {
     const getUrlAsync = async () => {
       // Get the deep link used to open the app
       const initialUrl = await Linking.getInitialURL();
@@ -210,39 +323,103 @@ const useInitialURL = () => {
     };
 
     getUrlAsync();
-  });
+  }, []);
 
-  return { url, processing };
+  return {url, processing};
 };
 
 const App = () => {
-  const { url: initialUrl, processing } = useInitialURL();
+  const {url: initialUrl, processing} = useInitialURL();
 
   return (
     <View style={styles.container}>
       <Text>
         {processing
-          ? `Processing the initial url from a deep link`
-          : `The deep link is: ${initialUrl || "None"}`}
+          ? 'Processing the initial url from a deep link'
+          : `The deep link is: ${initialUrl || 'None'}`}
       </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default App;
 ```
 
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Linking%20Example&supportedPlatforms=ios,android&ext=tsx
+import React, {useState, useEffect} from 'react';
+import {Linking, StyleSheet, Text, View} from 'react-native';
+
+const useInitialURL = () => {
+  const [url, setUrl] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(true);
+
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      // Get the deep link used to open the app
+      const initialUrl = await Linking.getInitialURL();
+
+      // The setTimeout is just for testing purpose
+      setTimeout(() => {
+        setUrl(initialUrl);
+        setProcessing(false);
+      }, 1000);
+    };
+
+    getUrlAsync();
+  }, []);
+
+  return {url, processing};
+};
+
+const App = () => {
+  const {url: initialUrl, processing} = useInitialURL();
+
+  return (
+    <View style={styles.container}>
+      <Text>
+        {processing
+          ? 'Processing the initial url from a deep link'
+          : `The deep link is: ${initialUrl || 'None'}`}
+      </Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```
+
+</TabItem>
+</Tabs>
+
 ### Send Intents (Android)
 
-```SnackPlayer name=Linking%20Function%20Component%20Example&supportedPlatforms=android
-import React, { useCallback } from "react";
-import { Alert, Button, Linking, StyleSheet, View } from "react-native";
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-const SendIntentButton = ({ action, extras, children }) => {
+```SnackPlayer name=Linking%20Example&supportedPlatforms=android&ext=js
+import React, {useCallback} from 'react';
+import {Alert, Button, Linking, StyleSheet, View} from 'react-native';
+
+const SendIntentButton = ({action, extras, children}) => {
   const handlePress = useCallback(async () => {
     try {
       await Linking.sendIntent(action, extras);
@@ -263,9 +440,11 @@ const App = () => {
       <SendIntentButton
         action="android.settings.APP_NOTIFICATION_SETTINGS"
         extras={[
-          { "android.provider.extra.APP_PACKAGE": "com.facebook.katana" },
-        ]}
-      >
+          {
+            key: 'android.provider.extra.APP_PACKAGE',
+            value: 'com.facebook.katana',
+          },
+        ]}>
         App Notification Settings
       </SendIntentButton>
     </View>
@@ -273,11 +452,81 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default App;
 ```
+
+</TabItem>
+<TabItem value="typescript">
+
+```SnackPlayer name=Linking%20Example&ext=tsx
+import React, {useCallback} from 'react';
+import {Alert, Button, Linking, StyleSheet, View} from 'react-native';
+
+type SendIntentButtonProps = {
+  action: string;
+  children: string;
+  extras?: Array<{
+    key: string;
+    value: string | number | boolean;
+  }>;
+};
+
+const SendIntentButton = ({
+  action,
+  extras,
+  children,
+}: SendIntentButtonProps) => {
+  const handlePress = useCallback(async () => {
+    try {
+      await Linking.sendIntent(action, extras);
+    } catch (e: any) {
+      Alert.alert(e.message);
+    }
+  }, [action, extras]);
+
+  return <Button title={children} onPress={handlePress} />;
+};
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <SendIntentButton action="android.intent.action.POWER_USAGE_SUMMARY">
+        Power Usage Summary
+      </SendIntentButton>
+      <SendIntentButton
+        action="android.settings.APP_NOTIFICATION_SETTINGS"
+        extras={[
+          {
+            key: 'android.provider.extra.APP_PACKAGE',
+            value: 'com.facebook.katana',
+          },
+        ]}>
+        App Notification Settings
+      </SendIntentButton>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default App;
+```
+
+</TabItem>
+</Tabs>
 
 # Reference
 
@@ -285,8 +534,11 @@ export default App;
 
 ### `addEventListener()`
 
-```jsx
-addEventListener(type, handler);
+```tsx
+static addEventListener(
+  type: 'url',
+  handler: (event: {url: string}) => void,
+): EmitterSubscription;
 ```
 
 Add a handler to Linking changes by listening to the `url` event type and providing the handler.
@@ -295,8 +547,8 @@ Add a handler to Linking changes by listening to the `url` event type and provid
 
 ### `canOpenURL()`
 
-```jsx
-canOpenURL(url);
+```tsx
+static canOpenURL(url: string): Promise<boolean>;
 ```
 
 Determine whether or not an installed app can handle a given URL.
@@ -315,9 +567,9 @@ The `Promise` will reject on Android if it was impossible to check if the URL ca
 
 > This method has limitations on iOS 9+. From [the official Apple documentation](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl):
 >
-> - If your app is linked against an earlier version of iOS but is running in iOS 9.0 or later, you can call this method up to 50 times. After reaching that limit, subsequent calls always return false. If the user reinstalls or upgrades the app, iOS resets the limit.
+> - If your app is linked against an earlier version of iOS but is running in iOS 9.0 or later, you can call this method up to 50 times. After reaching that limit, subsequent calls always resolve to `false`. If the user reinstalls or upgrades the app, iOS resets the limit.
 >
-> As of iOS 9, your app also needs to provide the `LSApplicationQueriesSchemes` key inside `Info.plist` or `canOpenURL()` will always return `false`.
+> As of iOS 9, your app also needs to provide the `LSApplicationQueriesSchemes` key inside `Info.plist` or `canOpenURL()` will always resolve to `false`.
 
 > When targeting Android 11 (SDK 30) you must specify the intents for the schemes you want to handle in `AndroidManifest.xml`. A list of common intents can be found [here](https://developer.android.com/guide/components/intents-common).
 >
@@ -338,8 +590,8 @@ The `Promise` will reject on Android if it was impossible to check if the URL ca
 
 ### `getInitialURL()`
 
-```jsx
-getInitialURL();
+```tsx
+static getInitialURL(): Promise<string | null>;
 ```
 
 If the app launch was triggered by an app link, it will give the link url, otherwise it will give `null`.
@@ -352,8 +604,8 @@ If the app launch was triggered by an app link, it will give the link url, other
 
 ### `openSettings()`
 
-```jsx
-openSettings();
+```tsx
+static openSettings(): Promise<void>;
 ```
 
 Open the Settings app and displays the app’s custom settings, if it has any.
@@ -362,8 +614,8 @@ Open the Settings app and displays the app’s custom settings, if it has any.
 
 ### `openURL()`
 
-```jsx
-openURL(url);
+```tsx
+static openURL(url: string): Promise<any>;
 ```
 
 Try to open the given `url` with any of the installed apps.
@@ -386,20 +638,13 @@ The method returns a `Promise` object. If the user confirms the open dialog or t
 
 ---
 
-### `removeEventListener()`
-
-```jsx
-removeEventListener(type, handler);
-```
-
-> **Deprecated.** Use the `remove()` method on the event subscription returned by [`addEventListener()`](#addeventlistener).
-
----
-
 ### `sendIntent()` <div class="label android">Android</div>
 
-```jsx
-sendIntent(action, extras);
+```tsx
+static sendIntent(
+  action: string,
+  extras?: Array<{key: string; value: string | number | boolean}>,
+): Promise<void>;
 ```
 
 Launch an Android intent with extras.

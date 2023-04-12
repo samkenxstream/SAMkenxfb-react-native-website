@@ -1,4 +1,4 @@
-import M1Cocoapods from './\_markdown-m1-cocoapods.mdx';
+import RemoveGlobalCLI from './\_remove-global-cli.md';
 
 ## Installing dependencies
 
@@ -15,7 +15,7 @@ brew install node
 brew install watchman
 ```
 
-If you have already installed Node on your system, make sure it is Node 14 or newer.
+If you have already installed Node on your system, make sure it is Node 16 or newer.
 
 [Watchman](https://facebook.github.io/watchman) is a tool by Facebook for watching changes in the filesystem. It is highly recommended you install it for better performance.
 
@@ -37,19 +37,9 @@ To install a simulator, open <strong>Xcode > Preferences...</strong> and select 
 
 #### CocoaPods
 
-[CocoaPods](https://cocoapods.org/) is built with Ruby and it will be installable with the default Ruby available on macOS.
-
-Using the default Ruby available on macOS will require you to use `sudo` when installing gems. (This is only an issue for the duration of the gem installation, though.)
-
-```shell
-sudo gem install cocoapods
-```
-
-Otherwise you can use a Ruby version manager, such as `rbenv`. Apps created with the command `npx react-native init` described below are configured to work well with `rbenv` and will pick the correct Ruby version requested by the template.
+[CocoaPods](https://cocoapods.org/) is one of the dependency management system available for iOS. CocoaPods is a Ruby [gem](https://en.wikipedia.org/wiki/RubyGems). You can install CocoaPods using the version of Ruby that ships with the latest version of macOS.
 
 For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-<M1Cocoapods />
 
 ### React Native Command Line Interface
 
@@ -57,29 +47,35 @@ React Native has a built-in command line interface. Rather than install and mana
 
 ## Creating a new application
 
-> If you previously installed a global `react-native-cli` package, please remove it as it may cause unexpected issues.
+<RemoveGlobalCLI />
 
 You can use React Native's built-in command line interface to generate a new project. Let's create a new React Native project called "AwesomeProject":
 
 ```shell
-npx react-native init AwesomeProject
+npx react-native@latest init AwesomeProject
 ```
 
 This is not necessary if you are integrating React Native into an existing application, if you "ejected" from Expo, or if you're adding iOS support to an existing React Native project (see [Integration with Existing Apps](integration-with-existing-apps.md)). You can also use a third-party CLI to init your React Native app, such as [Ignite CLI](https://github.com/infinitered/ignite).
+
+:::info
+
+If you are having trouble with iOS, try to reinstall the dependencies by running:
+
+1. `cd ios` to navigate to the
+2. `bundle install` to install [Bundler](https://bundler.io/)
+3. `bundle exec pod install` to install the iOS dependencies managed by CocoaPods.
+
+:::
 
 ### [Optional] Using a specific version or template
 
 If you want to start a new project with a specific React Native version, you can use the `--version` argument:
 
 ```shell
-npx react-native init AwesomeProject --version X.XX.X
+npx react-native@X.XX.X init AwesomeProject --version X.XX.X
 ```
 
-You can also start a project with a custom React Native template, like TypeScript, with `--template` argument:
-
-```shell
-npx react-native init AwesomeTSProject --template react-native-template-typescript
-```
+You can also start a project with a custom React Native template with the `--template` argument.
 
 > **Note** If the above command is failing, you may have old version of `react-native` or `react-native-cli` installed globally on your pc. Try uninstalling the cli and run the cli using `npx`.
 
@@ -91,6 +87,17 @@ The `.xcode.env` file contains an environment variable to export the path to the
 This is the **suggested approach** to decouple the build infrastructure from the system version of `node`. You should customize this variable with your own path or your own `node` version manager, if it differs from the default.
 
 On top of this, it's possible to add any other environment variable and to source the `.xcode.env` file in your build script phases. If you need to run script that requires some specific environment, this is the **suggested approach**: it allows to decouple the build phases from a specific environment.
+
+:::info
+If you are already using [NVM](http://nvm.sh/) (a command which helps you install and switch between versions of Node.js) and [zsh](https://ohmyz.sh/), you might want to move the code that initialize NVM from your `~/.zshrc` into a `~/.zshenv` file to help Xcode find your Node executable:
+
+```
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+```
+
+You might also want to ensure that all "shell script build phase" of your Xcode project, is using `/bin/zsh` as its shell.
+:::
 
 ## Running your React Native application
 
@@ -134,7 +141,7 @@ The above command will automatically run your app on the iOS Simulator by defaul
 
 Now that you have successfully run the app, let's modify it.
 
-- Open `App.js` in your text editor of choice and edit some lines.
+- Open `App.tsx` in your text editor of choice and edit some lines.
 - Hit `⌘R` in your iOS Simulator to reload the app and see your changes!
 
 ### That's it!

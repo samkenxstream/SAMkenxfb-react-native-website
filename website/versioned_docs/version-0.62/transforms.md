@@ -9,7 +9,7 @@ Transforms are style properties that will help you modify the appearance and pos
 
 ## Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 ```SnackPlayer name=Transforms
@@ -271,13 +271,13 @@ const styles = StyleSheet.create({
 The rotate transformations require a string so that the transform may be expressed in degrees (deg) or radians (rad). For example:
 
 ```js
-transform([{ rotateX: '45deg' }, { rotateZ: '0.785398rad' }]);
+transform([{rotateX: '45deg'}, {rotateZ: '0.785398rad'}]);
 ```
 
 The skew transformations require a string so that the transform may be expressed in degrees (deg). For example:
 
 ```js
-transform([{ skewX: '45deg' }]);
+transform([{skewX: '45deg'}]);
 ```
 
 | Type                                                                                                                                                                                                                                                                      | Required |

@@ -5,6 +5,10 @@ title: Publishing to Google Play Store
 
 Android requires that all apps be digitally signed with a certificate before they can be installed. In order to distribute your Android application via [Google Play store](https://play.google.com/store) it needs to be signed with a release key that then needs to be used for all future updates. Since 2017 it is possible for Google Play to manage signing releases automatically thanks to [App Signing by Google Play](https://developer.android.com/studio/publish/app-signing#app-signing-google-play) functionality. However, before your application binary is uploaded to Google Play it needs to be signed with an upload key. The [Signing Your Applications](https://developer.android.com/tools/publishing/app-signing.html) page on Android Developers documentation describes the topic in detail. This guide covers the process in brief, as well as lists the steps required to package the JavaScript bundle.
 
+:::info
+If you are using Expo, read the Expo guide for [Deploying to App Stores](https://docs.expo.dev/distribution/app-stores/) to build and submit your app for the Google Play Store. This guide works with any React Native app to automate the deployment process.
+:::
+
 ## Generating an upload key
 
 You can generate a private signing key using `keytool`.
@@ -112,33 +116,37 @@ In order for Google Play to accept AAB format the App Signing by Google Play nee
 Before uploading the release build to the Play Store, make sure you test it thoroughly. First uninstall any previous version of the app you already have installed. Install it on the device using the following command in the project root:
 
 ```shell
-npx react-native run-android --variant=release
+npx react-native run-android --mode=release
 ```
 
-Note that `--variant release` is only available if you've set up signing as described above.
+Note that `--mode release` is only available if you've set up signing as described above.
 
 You can terminate any running bundler instances, since all your framework and JavaScript code is bundled in the APK's assets.
 
 ## Publishing to other stores
 
-By default, the generated APK has the native code for both x86 and ARMv7a CPU architectures. This makes it easier to share APKs that run on almost all Android devices. However, this has the downside that there will be some unused native code on any device, leading to unnecessarily bigger APKs.
+By default, the generated APK has the native code for both `x86`, `x86_64`, `ARMv7a` and `ARM64-v8a` CPU architectures. This makes it easier to share APKs that run on almost all Android devices. However, this has the downside that there will be some unused native code on any device, leading to unnecessarily bigger APKs.
 
-You can create an APK for each CPU by changing the following line in android/app/build.gradle:
-
-```diff
-- ndk {
--   abiFilters "armeabi-v7a", "x86"
-- }
-- def enableSeparateBuildPerCPUArchitecture = false
-+ def enableSeparateBuildPerCPUArchitecture = true
-```
-
-Upload both these files to markets which support device targeting, such as [Google Play](https://developer.android.com/google/play/publishing/multiple-apks.html) and [Amazon AppStore](https://developer.amazon.com/docs/app-submission/device-filtering-and-compatibility.html), and the users will automatically get the appropriate APK. If you want to upload to other markets, such as [APKFiles](https://www.apkfiles.com/), which do not support multiple APKs for a single app, change the following line as well to create the default universal APK with binaries for both CPUs.
+You can create an APK for each CPU by adding the following line in your `android/app/build.gradle` file:
 
 ```diff
-- universalApk false  // If true, also generate a universal APK
-+ universalApk true  // If true, also generate a universal APK
+android {
+
+    splits {
+        abi {
+            reset()
+            enable true
+            universalApk false
+            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+    }
+
+}
 ```
+
+Upload these files to markets which support device targeting, such as [Amazon AppStore](https://developer.amazon.com/docs/app-submission/device-filtering-and-compatibility.html) or [F-Droid](https://f-droid.org/en/), and the users will automatically get the appropriate APK. If you want to upload to other markets, such as [APKFiles](https://www.apkfiles.com/), which do not support multiple APKs for a single app, change the `universalApk false` line to `true` to create the default universal APK with binaries for both CPUs.
+
+Please note that you will also have to configure distinct version codes, as [suggested in this page](https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions) from the official Android documentation.
 
 ## Enabling Proguard to reduce the size of the APK (optional)
 

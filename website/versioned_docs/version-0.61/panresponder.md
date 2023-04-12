@@ -78,7 +78,7 @@ class ExampleComponent extends Component {
         // Returns whether this component should block native components from becoming the JS
         // responder. Returns true by default. Is currently only supported on android.
         return true;
-      }
+      },
     });
   }
 
@@ -90,7 +90,7 @@ class ExampleComponent extends Component {
 
 ### Working Example
 
-To see it in action, try the [PanResponder example in RNTester](https://github.com/facebook/react-native/blob/master/packages/rn-tester/js/examples/PanResponder/PanResponderExample.js)
+To see it in action, try the [PanResponder example in RNTester](https://github.com/facebook/react-native/blob/0.61-stable/packages/rn-tester/js/examples/PanResponder/PanResponderExample.js)
 
 ---
 

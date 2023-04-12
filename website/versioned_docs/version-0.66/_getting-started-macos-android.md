@@ -31,7 +31,7 @@ If you have already installed JDK on your system, make sure it is JDK 8 or newer
 
 Setting up your development environment can be somewhat tedious if you're new to Android development. If you're already familiar with Android development, there are a few things you may need to configure. In either case, please make sure to carefully follow the next few steps.
 
-<h4>1. Install Android Studio</h4>
+<h4 id="android-studio">1. Install Android Studio</h4>
 
 [Download and install Android Studio](https://developer.android.com/studio/index.html). While on Android Studio installation wizard, make sure the boxes next to all of the following items are checked:
 
@@ -45,11 +45,11 @@ Then, click "Next" to install all of these components.
 
 Once setup has finalized and you're presented with the Welcome screen, proceed to the next step.
 
-<h4>2. Install the Android SDK</h4>
+<h4 id="android-sdk">2. Install the Android SDK</h4>
 
 Android Studio installs the latest Android SDK by default. Building a React Native app with native code, however, requires the `Android 11 (R)` SDK in particular. Additional Android SDKs can be installed through the SDK Manager in Android Studio.
 
-To do that, open Android Studio, click on "Configure" button and select "SDK Manager".
+To do that, open Android Studio, click on "More Actions" button and select "SDK Manager".
 
 ![Android Studio Welcome](/docs/assets/GettingStartedAndroidStudioWelcomeMacOS.png)
 
@@ -137,7 +137,7 @@ If you use Android Studio to open `./AwesomeProject/android`, you can see the li
 
 ![Android Studio AVD Manager](/docs/assets/GettingStartedAndroidStudioAVD.png)
 
-If you have recently installed Android Studio, you will likely need to [create a new AVD](https://developer.android.com/studio/run/managing-avds.html). Select "Create Virtual Device...", then pick any Phone from the list and click "Next", then select the **Q** API Level 30 image.
+If you have recently installed Android Studio, you will likely need to [create a new AVD](https://developer.android.com/studio/run/managing-avds.html). Select "Create Virtual Device...", then pick any Phone from the list and click "Next", then select the **R** API Level 30 image.
 
 Click "Next" then "Finish" to create your AVD. At this point you should be able to click on the green triangle button next to your AVD to launch it, then proceed to the next step.
 

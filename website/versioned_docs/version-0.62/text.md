@@ -11,7 +11,7 @@ A React component for displaying text.
 
 In the following example, the nested title and body text will inherit the `fontFamily` from `styles.baseText`, but the title provides its own additional styles. The title and body will stack on top of each other on account of the literal newlines:
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 ```SnackPlayer name=Text%20Functional%20Component%20Example
@@ -212,9 +212,7 @@ class MyAppHeaderText extends Component {
   render() {
     return (
       <MyAppText>
-        <Text style={{ fontSize: 20 }}>
-          {this.props.children}
-        </Text>
+        <Text style={{fontSize: 20}}>{this.props.children}</Text>
       </MyAppText>
     );
   }
@@ -226,9 +224,9 @@ Composing `MyAppText` in this way ensures that we get the styles from a top-leve
 React Native still has the concept of style inheritance, but limited to text subtrees. In this case, the second part will be both bold and red.
 
 ```jsx
-<Text style={{ fontWeight: 'bold' }}>
+<Text style={{fontWeight: 'bold'}}>
   I am bold
-  <Text style={{ color: 'red' }}>and red</Text>
+  <Text style={{color: 'red'}}>and red</Text>
 </Text>
 ```
 

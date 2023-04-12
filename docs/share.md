@@ -7,12 +7,12 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import con
 
 ## Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
-<TabItem value="functional">
+<Tabs groupId="language" queryString defaultValue={constants.defaultSnackLanguage} values={constants.snackLanguages}>
+<TabItem value="javascript">
 
-```SnackPlayer name=Function%20Component%20Example&supportedPlatforms=ios,android
+```SnackPlayer name=Example&supportedPlatforms=ios,android&ext=js
 import React from 'react';
-import { Share, View, Button } from 'react-native';
+import {Alert, Share, View, Button} from 'react-native';
 
 const ShareExample = () => {
   const onShare = async () => {
@@ -31,11 +31,11 @@ const ShareExample = () => {
         // dismissed
       }
     } catch (error) {
-      alert(error.message);
+      Alert.alert(error.message);
     }
   };
   return (
-    <View style={{ marginTop: 50 }}>
+    <View style={{marginTop: 50}}>
       <Button onPress={onShare} title="Share" />
     </View>
   );
@@ -45,20 +45,19 @@ export default ShareExample;
 ```
 
 </TabItem>
-<TabItem value="classical">
+<TabItem value="typescript">
 
-```SnackPlayer name=Class%20Component%20Example&supportedPlatforms=ios,android
-import React, { Component } from 'react';
-import { Share, View, Button } from 'react-native';
+```SnackPlayer name=Example&supportedPlatforms=ios,android&ext=tsx
+import React from 'react';
+import {Alert, Share, View, Button} from 'react-native';
 
-class ShareExample extends Component {
-  onShare = async () => {
+const ShareExample = () => {
+  const onShare = async () => {
     try {
       const result = await Share.share({
         message:
           'React Native | A framework for building native apps using React',
       });
-
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
           // shared with activity type of result.activityType
@@ -68,19 +67,16 @@ class ShareExample extends Component {
       } else if (result.action === Share.dismissedAction) {
         // dismissed
       }
-    } catch (error) {
-      alert(error.message);
+    } catch (error: any) {
+      Alert.alert(error.message);
     }
   };
-
-  render() {
-    return (
-      <View style={{ marginTop: 50 }}>
-        <Button onPress={this.onShare} title="Share" />
-      </View>
-    );
-  }
-}
+  return (
+    <View style={{marginTop: 50}}>
+      <Button onPress={onShare} title="Share" />
+    </View>
+  );
+};
 
 export default ShareExample;
 ```
@@ -94,8 +90,8 @@ export default ShareExample;
 
 ### `share()`
 
-```jsx
-static share(content, options)
+```tsx
+static share(content: ShareContent, options?: ShareOptions);
 ```
 
 Open a dialog to share text content.
@@ -106,10 +102,10 @@ In Android, returns a Promise which will always be resolved with action being `S
 
 **Properties:**
 
-| Name                                                         | Type   | Description                                                                                                                                                                                                                                        |
-| ------------------------------------------------------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| content <div className="label basic required">Required</div> | object | `message` - a message to share<br/>`url` - a URL to share <div class="label ios">iOS</div><br/>`title` - title of the message <div class="label android">Android</div><hr/>At least one of `url` and `message` is required.                        |
-| options                                                      | object | `dialogTitle` <div class="label android">Android</div><br/>`excludedActivityTypes` <div class="label ios">iOS</div><br/>`subject` - a subject to share via email <div class="label ios">iOS</div><br/>`tintColor` <div class="label ios">iOS</div> |
+| Name                                                         | Type   | Description                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| content <div className="label basic required">Required</div> | object | `message` - a message to share<br/>`url` - a URL to share <div class="label ios">iOS</div><br/>`title` - title of the message <div class="label android">Android</div><hr/>At least one of `url` and `message` is required.                                                                                                                                              |
+| options                                                      | object | `dialogTitle` <div class="label android">Android</div><br/>`excludedActivityTypes` <div class="label ios">iOS</div><br/>`subject` - a subject to share via email <div class="label ios">iOS</div><br/>`tintColor` <div class="label ios">iOS</div><br/>`anchor` - the node to which the action sheet should be anchored (used for iPad) <div class="label ios">iOS</div> |
 
 ---
 
@@ -117,8 +113,8 @@ In Android, returns a Promise which will always be resolved with action being `S
 
 ### `sharedAction`
 
-```jsx
-static sharedAction
+```tsx
+static sharedAction: 'sharedAction';
 ```
 
 The content was successfully shared.
@@ -127,8 +123,8 @@ The content was successfully shared.
 
 ### `dismissedAction` <div class="label ios">iOS</div>
 
-```jsx
-static dismissedAction
+```tsx
+static dismissedAction: 'dismissedAction';
 ```
 
 The dialog has been dismissed.

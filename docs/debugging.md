@@ -35,8 +35,8 @@ These notifications can be hidden using `LogBox.ignoreAllLogs()`. This is useful
 
 > Ignore logs as a last resort and create a task to fix any logs that are ignored.
 
-```jsx
-import { LogBox } from 'react-native';
+```tsx
+import {LogBox} from 'react-native';
 
 // Ignore log notification by message:
 LogBox.ignoreLogs(['Warning: ...']);
@@ -90,7 +90,7 @@ You can use [the standalone version of React Developer Tools](https://github.com
 
 > Note: Version 4 of `react-devtools` requires `react-native` version 0.62 or higher to work properly.
 
-<Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
+<Tabs groupId="package-manager" queryString defaultValue={constants.defaultPackageManager} values={constants.packageManagers}>
 <TabItem value="npm">
 
 ```shell
@@ -117,7 +117,13 @@ react-devtools
 
 It should connect to your simulator within a few seconds.
 
-> Note: if you prefer to avoid global installations, you can add `react-devtools` as a project dependency. Add the `react-devtools` package to your project using `npm install --save-dev react-devtools`, then add `"react-devtools": "react-devtools"` to the `scripts` section in your `package.json`, and then run `npm run react-devtools` from your project folder to open the DevTools.
+:::info
+If connecting to the emulator proves troublesome (especially Android 12), try running `adb reverse tcp:8097 tcp:8097` in a new terminal.
+:::
+
+:::info
+If you prefer to avoid global installations, you can add `react-devtools` as a project dependency. Add the `react-devtools` package to your project using `npm install --save-dev react-devtools`, then add `"react-devtools": "react-devtools"` to the `scripts` section in your `package.json`, and then run `npm run react-devtools` from your project folder to open the DevTools.
+:::
 
 ### Integration with React Native Inspector
 
@@ -160,7 +166,7 @@ You can view installation instructions [in the README](https://github.com/infini
 <div className="banner-native-code-required">
   <h3>Projects with Native Code Only</h3>
   <p>
-    The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="https://docs.expo.dev/workflow/customizing/" target="_blank">ejecting</a> to use this API.
+    The following section only applies to projects with native code exposed. If you are using the managed Expo workflow, see the guide on <a href="https://docs.expo.dev/workflow/prebuild/" target="_blank">prebuild</a> to use this API.
   </p>
 </div>
 
@@ -173,7 +179,7 @@ npx react-native log-ios
 npx react-native log-android
 ```
 
-You may also access these through `Debug → Open System Log...` in the iOS Simulator or by running `adb logcat *:S ReactNative:V ReactNativeJS:V` in a terminal while an Android app is running on a device or emulator.
+You may also access these through `Debug → Open System Log...` in the iOS Simulator or by running `adb logcat "*:S" ReactNative:V ReactNativeJS:V` in a terminal while an Android app is running on a device or emulator.
 
 > If you're using Create React Native App or Expo CLI, console logs already appear in the same terminal output as the bundler.
 
@@ -181,13 +187,11 @@ You may also access these through `Debug → Open System Log...` in the iOS Simu
 
 > If you're using Create React Native App or Expo CLI, this is configured for you already.
 
-On iOS devices, open the file [`RCTWebSocketExecutor.mm`](https://github.com/facebook/react-native/blob/master/React/CoreModules/RCTWebSocketExecutor.mm) and change "localhost" to the IP address of your computer, then select "Debug JS Remotely" from the Developer Menu.
+On iOS devices, open the file [`RCTWebSocketExecutor.mm`](https://github.com/facebook/react-native/blob/main/packages/react-native/React/CoreModules/RCTWebSocketExecutor.mm) and change "localhost" to the IP address of your computer, then select "Debug JS Remotely" from the Developer Menu.
 
 On Android 5.0+ devices connected via USB, you can use the [`adb` command line tool](http://developer.android.com/tools/help/adb.html) to setup port forwarding from the device to your computer:
 
 `adb reverse tcp:8081 tcp:8081`
-
-<!-- alex ignore host-hostess -->
 
 Alternatively, select "Dev Settings" from the Developer Menu, then update the "Debug server host for device" setting to match the IP address of your computer.
 
@@ -196,3 +200,13 @@ Alternatively, select "Dev Settings" from the Developer Menu, then update the "D
 ## Debugging native code
 
 When working with native code, such as when writing native modules, you can launch the app from Android Studio or Xcode and take advantage of the native debugging features (setting up breakpoints, etc.) as you would in case of building a standard native app.
+
+Another option is to run your application using the React Native CLI and attach the native debugger of the native IDE (Android Studio or Xcode) to the process.
+
+### Android Studio
+
+On Android Studio you can do this by going on the "Run" option on the menu bar, clicking on "Attach to Process..." and selecting the running React Native app.
+
+### Xcode
+
+On Xcode click on "Debug" on the top menu bar, select the "Attach to process" option, and select the application in the list of "Likely Targets".

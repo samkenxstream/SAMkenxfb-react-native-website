@@ -1,4 +1,12 @@
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 'use strict';
+
 const visit = require('unist-util-visit-parents');
 const u = require('unist-builder');
 const dedent = require('dedent');
@@ -24,8 +32,16 @@ const processNode = (node, parent) => {
       const description = params.description
         ? decodeURIComponent(params.description)
         : 'Example usage';
-      const sampleCode = node.value;
-      const encodedSampleCode = encodeURIComponent(sampleCode);
+      const ext = params.ext ? decodeURIComponent(params.ext) : 'tsx';
+      const filename = `App.${ext}`;
+      const files = encodeURIComponent(
+        JSON.stringify({
+          [filename]: {
+            type: 'CODE',
+            contents: node.value,
+          },
+        })
+      );
       const dependencies = params.dependencies || '';
       const platform = params.platform || 'web';
       const supportedPlatforms = params.supportedPlatforms || 'ios,android,web';
@@ -41,7 +57,7 @@ const processNode = (node, parent) => {
             class="snack-player"
             data-snack-name="${name}"
             data-snack-description="${description}"
-            data-snack-code="${encodedSampleCode}"
+            data-snack-files="${files}"
             data-snack-dependencies="${dependencies}"
             data-snack-platform="${platform}"
             data-snack-supported-platforms="${supportedPlatforms}"

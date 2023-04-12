@@ -12,7 +12,7 @@ DynamicColorIOS({
   light: color,
   dark: color,
   highContrastLight: color, // (optional) will fallback to "light" if not provided
-  highContrastDark: color // (optional) will fallback to "dark" if not provided
+  highContrastDark: color, // (optional) will fallback to "dark" if not provided
 });
 ```
 
@@ -22,7 +22,7 @@ At runtime, the system will choose which of the colors to display depending on t
 
 #### Developer notes
 
-<Tabs groupId="guide" defaultValue="web" values={constants.getDevNotesTabs(["ios", "web"])}>
+<Tabs groupId="guide" queryString defaultValue="web" values={constants.getDevNotesTabs(["ios", "web"])}>
 
 <TabItem value="web">
 
@@ -39,17 +39,17 @@ At runtime, the system will choose which of the colors to display depending on t
 ## Example
 
 ```jsx
-import { DynamicColorIOS } from 'react-native';
+import {DynamicColorIOS} from 'react-native';
 
 const customDynamicTextColor = DynamicColorIOS({
   dark: 'lightskyblue',
-  light: 'midnightblue'
+  light: 'midnightblue',
 });
 
 const customContrastDynamicTextColor = DynamicColorIOS({
   dark: 'darkgray',
   light: 'lightgray',
   highContrastDark: 'black',
-  highContrastLight: 'white'
+  highContrastLight: 'white',
 });
 ```

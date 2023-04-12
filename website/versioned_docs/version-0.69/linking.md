@@ -5,13 +5,6 @@ title: Linking
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem'; import constants from '@site/core/TabsConstants';
 
-<div className="banner-native-code-required">
-  <h3>Projects with Native Code Only</h3>
-  <p>
-    The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="http://docs.expo.io/versions/latest/workflow/linking/">Linking</a> in the Expo documentation for the appropriate alternative.
-  </p>
-</div>
-
 `Linking` gives you a general interface to interact with both incoming and outgoing app links.
 
 Every Link (URL) has a URL Scheme, some websites are prefixed with `https://` or `http://` and the `http` is the URL Scheme. Let's call it scheme for short.
@@ -35,9 +28,16 @@ As mentioned in the introduction, there are some URL schemes for core functional
 
 ### Enabling Deep Links
 
+<div className="banner-native-code-required">
+  <h3>Projects with Native Code Only</h3>
+  <p>
+    The following section only applies to projects with native code exposed. If you are using the managed Expo workflow, see the guide on <a href="https://docs.expo.dev/guides/linking/">Linking</a> in the Expo documentation for the appropriate alternative.
+  </p>
+</div>
+
 If you want to enable deep links in your app, please read the below guide:
 
-<Tabs groupId="syntax" defaultValue={constants.defaultPlatform} values={constants.platforms}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultPlatform} values={constants.platforms}>
 <TabItem value="android">
 
 > For instructions on how to add support for deep linking on Android, refer to [Enabling Deep Links for App Content - Add Intent Filters for Your Deep Links](http://developer.android.com/training/app-indexing/deep-linking.html#adding-filters).

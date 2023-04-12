@@ -26,14 +26,14 @@ In versions 0.65 and below, RootTag is accessed via a [legacy context](https://g
 How to access `RootTag` via the `RootTagContext`.
 
 ```js
-import { RootTagContext } from 'react-native';
+import {RootTagContext} from 'react-native';
 import NativeAnalytics from 'native-analytics';
 import NativeNavigation from 'native-navigation';
 
 function ScreenA() {
   const rootTag = useContext(RootTagContext);
 
-  const updateTitle = (title) => {
+  const updateTitle = title => {
     NativeNavigation.setTitle(rootTag, title);
   };
 
@@ -71,4 +71,4 @@ The legacy context access to `RootTag` will be removed and replaced by `RootTagC
 
 ## Future Plans
 
-With the new React Native architecture progressing, there will be future iterations to `RootTag`, with the intention to keep the `RootTag` type opaque and prevent thrash in React Native codebases. Please do not rely on the fact that RootTag currently aliases to a number! If your app relies on RootTags, keep an eye on our version change logs, which you can find [here](https://github.com/facebook/react-native/blob/main/CHANGELOG.md).
+With the new React Native architecture progressing, there will be future iterations to `RootTag`, with the intention to keep the `RootTag` type opaque and prevent thrash in React Native codebases. Please do not rely on the fact that RootTag currently aliases to a number! If your app relies on RootTags, keep an eye on our version change logs, which you can find [here](https://github.com/facebook/react-native/blob/0.66-stable/CHANGELOG.md).

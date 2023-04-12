@@ -81,8 +81,8 @@ For images included via Xcode asset catalogs or in the Android drawable folder, 
 
 ```jsx
 <Image
-  source={{ uri: 'app_icon' }}
-  style={{ width: 40, height: 40 }}
+  source={{uri: 'app_icon'}}
+  style={{width: 40, height: 40}}
 />
 ```
 
@@ -90,8 +90,8 @@ For images in the Android assets folder, use the `asset:/` scheme:
 
 ```jsx
 <Image
-  source={{ uri: 'asset:/app_icon.png' }}
-  style={{ width: 40, height: 40 }}
+  source={{uri: 'asset:/app_icon.png'}}
+  style={{width: 40, height: 40}}
 />
 ```
 
@@ -99,7 +99,7 @@ These approaches provide no safety checks. It's up to you to guarantee that thos
 
 ## Network Images
 
-Many of the images you will display in your app will not be available at compile time, or you will want to load some dynamically to keep the binary size down. Unlike with static resources, _you will need to manually specify the dimensions of your image_. It's highly recommended that you use https as well in order to satisfy [App Transport Security](running-on-device.md#app-transport-security) requirements on iOS.
+Many of the images you will display in your app will not be available at compile time, or you will want to load some dynamically to keep the binary size down. Unlike with static resources, _you will need to manually specify the dimensions of your image_. It's highly recommended that you use https as well in order to satisfy [App Transport Security](publishing-to-app-store.md#1-enable-app-transport-security) requirements on iOS.
 
 ```jsx
 // GOOD
@@ -120,11 +120,11 @@ If you would like to set such things as the HTTP-Verb, Headers or a Body along w
     uri: 'https://reactjs.org/logo-og.png',
     method: 'POST',
     headers: {
-      Pragma: 'no-cache'
+      Pragma: 'no-cache',
     },
-    body: 'Your Body goes here'
+    body: 'Your Body goes here',
   }}
-  style={{ width: 400, height: 400 }}
+  style={{width: 400, height: 400}}
 />
 ```
 
@@ -140,10 +140,10 @@ Sometimes, you might be getting encoded image data from a REST API call. You can
   style={{
     width: 51,
     height: 51,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
   }}
   source={{
-    uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg=='
+    uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
   }}
 />
 ```
@@ -161,9 +161,9 @@ In some cases you might only want to display an image if it is already in the lo
 <Image
   source={{
     uri: 'https://reactjs.org/logo-og.png',
-    cache: 'only-if-cached'
+    cache: 'only-if-cached',
   }}
-  style={{ width: 400, height: 400 }}
+  style={{width: 400, height: 400}}
 />
 ```
 
@@ -192,7 +192,7 @@ For example, the result of `require('./my-icon.png')` might be:
 In React Native, one interesting decision is that the `src` attribute is named `source` and doesn't take a string but an object with a `uri` attribute.
 
 ```jsx
-<Image source={{ uri: 'something.jpg' }} />
+<Image source={{uri: 'something.jpg'}} />
 ```
 
 On the infrastructure side, the reason is that it allows us to attach metadata to this object. For example if you are using `require('./my-icon.png')`, then we add information about its actual location and size (don't rely on this fact, it might change in the future!). This is also future proofing, for example we may want to support sprites at some point, instead of outputting `{uri: ...}`, we can output `{uri: ..., crop: {left: 10, top: 50, width: 20, height: 40}}` and transparently support spriting on all the existing call sites.

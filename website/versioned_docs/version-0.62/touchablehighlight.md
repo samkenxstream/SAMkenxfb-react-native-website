@@ -14,7 +14,7 @@ TouchableHighlight must have one child (not zero or more than one). If you wish 
 ```jsx
 function MyComponent(props) {
   return (
-    <View {...props} style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View {...props} style={{flex: 1, backgroundColor: '#fff'}}>
       <Text>My Component</Text>
     </View>
   );
@@ -30,7 +30,7 @@ function MyComponent(props) {
 
 ## Example
 
-<Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}>
+<Tabs groupId="syntax" queryString defaultValue={constants.defaultSyntax} values={constants.syntax}>
 <TabItem value="functional">
 
 ```SnackPlayer name=TouchableHighlight%20Function%20Component%20Example
